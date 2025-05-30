@@ -1,10 +1,10 @@
 import { IUser } from '../models/user.js';
 import User from '../models/user.js';
+import { getDailyPrompt } from '../services/dailyPrompt.js';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET_KEY || 'somesecretkey';
 
-// helper to sign JWT token
 function signToken(user: IUser) {
   return jwt.sign(
     { id: user._id, email: user.email, username: user.username },
@@ -12,7 +12,16 @@ function signToken(user: IUser) {
     { expiresIn: '2h' }
   );
 }
+
 export const resolvers = {
+  Query: {
+    dailyPrompt: async () => {
+      const prompt = await getDailyPrompt();
+      console.log('dailyPrompt resolver result:', prompt);
+      return prompt;
+    },
+  },
+
   Mutation: {
     signup: async (_: any, args: { username: string; email: string; password: string; confirmPassword: string }) => {
       const { username, email, password, confirmPassword } = args;
@@ -21,7 +30,6 @@ export const resolvers = {
         throw new Error('Passwords do not match');
       }
 
-      // Check if user already exists
       const existingUser = await User.findOne({ email });
       if (existingUser) {
         throw new Error('Email already in use');
@@ -52,6 +60,6 @@ export const resolvers = {
       const token = signToken(user);
 
       return { token, user };
-    }
+    },
   }
 };

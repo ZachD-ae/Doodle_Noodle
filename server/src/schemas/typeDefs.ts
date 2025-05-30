@@ -12,8 +12,29 @@ const typeDefs = gql`
     user: User!
   }
 
+  type Prompt {
+    _id: ID!
+    text: String!
+    drawings: [Drawing]
+    createdAt: String
+  }
+
+type DailyPrompt {
+  date: String!
+  prompt: Prompt!
+}
+
+  type Drawing {
+    _id: ID!
+    imageURL: String!
+    prompt: Prompt
+    artist: User
+    createdAt: String
+  }
+    
   type Query {
     me: User
+    dailyPrompt: Prompt
   }
 
   type Mutation {

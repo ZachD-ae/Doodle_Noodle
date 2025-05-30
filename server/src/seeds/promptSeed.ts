@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
-import Prompt from '../models/prompt.js'; // adjust path if needed
+import Prompt from '../models/prompt.js'; // adjust path as needed
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/doodle-noodle';
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/daily-doodle';
 
 const prompts = [
   { text: 'An evil scientist bringing his creation to life.' },
@@ -17,21 +17,21 @@ const prompts = [
 async function seedPrompts() {
   try {
     await mongoose.connect(MONGO_URI);
+
     console.log('Connected to DB');
 
-    // Clear existing prompts before seeding
+    // Clear existing prompts if you want to start fresh
     await Prompt.deleteMany({});
     console.log('Cleared existing prompts');
 
-    // Insert new prompts without dateUsed field (will default to null or undefined)
+    // Insert all prompts
     await Prompt.insertMany(prompts);
-    console.log(`Inserted ${prompts.length} prompts`);
+    console.log('Inserted prompts:', prompts.length);
 
-    await mongoose.disconnect();
+    mongoose.disconnect();
     console.log('Disconnected from DB');
   } catch (err) {
     console.error('Error seeding prompts:', err);
-    process.exit(1);  // Exit with failure on error
   }
 }
 
