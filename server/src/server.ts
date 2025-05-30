@@ -30,10 +30,20 @@ const startApolloServer = async () => {
     app.use(express.json());
 
     app.use('/graphql', expressMiddleware(server, {
-        context: async ({ req }) => ({
-            user: getUserFromToken(req),
-        }),
-    }))
+        context: async ({ req }) => {
+        // Get token from authorization header, e.g. "Bearer <token>"
+        let token = req.headers.authorization || '';
+
+        if (token.startsWith('Bearer ')) {
+        token = token.slice(7, token.length); // remove "Bearer " prefix
+        }
+
+        // Pass token string to getUserFromToken
+        const user = getUserFromToken(token);
+
+        return { user };
+        },
+    }));
 
     app.use(express.static(path.join(__dirname, '..', '..', 'client', 'dist')));
 
