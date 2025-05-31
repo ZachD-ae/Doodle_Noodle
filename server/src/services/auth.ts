@@ -1,66 +1,40 @@
+import { GraphQLError } from 'graphql';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-
 dotenv.config();
 
-interface JwtPayload {
-  _id: string;
-  username: string;
-  email: string;
-}
 
-const secretKey = process.env.JWT_SECRET_KEY || 'secret';
-const expiration = '1h';
+export const getUserFromToken = (req: any) => {
+  let token = req.body.token || req.query.token || req.headers.authorization;
 
-// This gets passed into Apollo Server as context
-export function authMiddleware({ req }: { req: any }) {
-  let token = req.headers.authorization || '';
-  console.log('🧪 Incoming auth header:', req.headers.authorization);
-  if (token.startsWith('Bearer ')) {
-    token = token.split(' ')[1];
+  if (req.headers?.authorization) {
+    token = token.split(' ').pop().trim();
+  };
+
+  //If no token is provided, return the request object as is
+  if (!token) {
+    return null;
   }
 
   try {
-    if (token) {
-      console.log('🔑 JWT Secret in use:', secretKey);
-      const decoded = jwt.verify(token, secretKey) as JwtPayload;
-      console.log('✅ Token decoded:', decoded); // 👈 Add this line
-      return { user: decoded };
-    }
+    const user: any = jwt.verify(token, process.env.JWT_SECRET_KEY || '', { maxAge: '2hr' })
+    return user.data
   } catch (err) {
-    if (err instanceof Error) {
-      console.warn('❌ Invalid token:', err.message);
-    } else {
-      console.warn('❌ Invalid token:', err);
-    }
+    console.log('Invalid Token');
   }
-
-  return { user: null };
-}
-
-// Used for login/signup
-export function signToken(user: { _id: unknown; username: string; email: string }) {
-  console.log('🔑 JWT Secret in use:', secretKey);
-  return jwt.sign(
-    { _id: user._id, username: user.username, email: user.email },
-    secretKey,
-    { expiresIn: expiration }
-  );
-}
-
-export function getUserFromToken(token: string): JwtPayload | null {
-  if (token.startsWith('Bearer ')) {
-    token = token.split(' ')[1];
-  }
-
-  try {
-    if (token) {
-      const decoded = jwt.verify(token, secretKey) as JwtPayload;
-      return decoded;
-    }
-  } catch (err) {
-    console.warn('❌ Invalid token in getUserFromToken');
-  }
-
   return null;
+};
+
+export const signToken = (username: string, email: string, _id: unknown) => {
+  const payload = { username, email, _id };
+  const secretKey: any = process.env.JWT_SECRET_KEY || '';
+
+  return jwt.sign({ data: payload }, secretKey, { expiresIn: '1h' });
+};
+
+export class AuthenticationError extends GraphQLError {
+  constructor(message: string) {
+    super(message, undefined, undefined, undefined, ['UNAUTHENTICATED']);
+    Object.defineProperty(this, 'name', { value: 'AuthenticationError' })
+  }
 }
