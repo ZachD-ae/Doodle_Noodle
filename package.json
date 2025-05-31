@@ -18,6 +18,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@chakra-ui/theme-tools": "^2.2.6",
         "concurrently": "^8.2.2"
     },
     "devDependencies": {
