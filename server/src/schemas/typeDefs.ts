@@ -7,13 +7,44 @@ const typeDefs = gql`
     email: String!
   }
 
+  type AuthPayload {
+    token: String!
+    user: User!
+  }
+
+  type Prompt {
+    _id: ID!
+    text: String!
+    drawings: [Drawing]
+    createdAt: String
+  }
+
+type DailyPrompt {
+  date: String!
+  prompt: Prompt!
+}
+
+  type Drawing {
+    _id: ID!
+    imageURL: String!
+    prompt: Prompt
+    artist: User
+    createdAt: String
+  }
+    
   type Query {
     me: User
+    dailyPrompt: Prompt
   }
 
   type Mutation {
-    login(email: String!, password: String!): String
-    signup(username: String!, email: String!, password: String!): String
+    login(email: String!, password: String!): AuthPayload!
+    signup(
+      username: String!
+      email: String!
+      password: String!
+      confirmPassword: String!
+    ): AuthPayload!
   }
 `;
 

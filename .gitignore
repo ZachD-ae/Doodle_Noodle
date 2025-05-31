@@ -1,9 +1,21 @@
+<<<<<<< HEAD
+=======
+# Node modules
+node_modules/
+**/node_modules/
+
+# Environment variables
+.env
+**/.env
+
+>>>>>>> 8e7b44da47a0bac2cfdf6c58c35d6d329e22e21e
 # Logs
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+<<<<<<< HEAD
 lerna-debug.log*
 .pnpm-debug.log*
 
@@ -135,3 +147,30 @@ dist
 cypress/videos
 cypress/screenshots
 cypress/reports
+=======
+pnpm-debug.log*
+lerna-debug.log*
+
+# Mac system files
+.DS_Store
+
+# Editor directories and files
+.vscode/
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build output
+dist/
+dist-ssr/
+**/dist/
+*.local
+
+# Ignore only if you **don't** want to push lockfiles (not recommended)
+# package-lock.json
+# yarn.lock
+>>>>>>> 8e7b44da47a0bac2cfdf6c58c35d6d329e22e21e
