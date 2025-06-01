@@ -1,9 +1,14 @@
 import { IUser } from '../models/user.js';
 import User from '../models/user.js';
+import Drawing from '../models/drawing.js';
 import { getDailyPrompt } from '../services/dailyPrompt.js';
 import jwt from 'jsonwebtoken';
 
 const JWT_SECRET = process.env.JWT_SECRET_KEY || 'somesecretkey';
+
+interface Context {
+  user: IUser;
+}
 
 function signToken(user: IUser) {
   return jwt.sign(
@@ -19,6 +24,20 @@ export const resolvers = {
       const prompt = await getDailyPrompt();
       console.log('dailyPrompt resolver result:', prompt);
       return prompt;
+    },
+
+    hasSubmittedToday: async (_: any, __: any, context: Context) => {
+      if (!context.user) return false;
+
+      const prompt = await getDailyPrompt();
+      if (!prompt) return false;
+
+      const drawing = await Drawing.findOne({
+        artist: context.user.id,
+        prompt: prompt._id,
+      });
+
+      return !!drawing;
     },
   },
 
@@ -61,5 +80,31 @@ export const resolvers = {
 
       return { token, user };
     },
+
+    submitDrawing: async (_: any, args: { image: string }, context: Context) => {
+      if (!context.user) throw new Error('Not authenticated');
+
+      const prompt = await getDailyPrompt();
+      if (!prompt) throw new Error('No active prompt today');
+
+      // Check if user already submitted for this prompt
+      const existing = await Drawing.findOne({
+        artist: context.user.id,
+        prompt: prompt._id,
+      });
+
+      if (existing) {
+        throw new Error('You’ve already submitted a drawing for today!');
+      }
+
+      // Proceed to save drawing
+      const newDrawing = await Drawing.create({
+        artist: context.user.id,
+        prompt: prompt._id,
+        image: args.image,
+      });
+
+      return newDrawing;
+    }
   }
 };
