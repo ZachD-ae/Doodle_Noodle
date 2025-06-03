@@ -6,14 +6,14 @@ const LandingPage: React.FC = () => {
     <div className="flex flex-col items-center justify-center p-6 min-h-screen bg-gray-50">
       {/* Logo */}
       <div className="mb-8">
-        <img src="/DoodleNoodleLogo.svg" alt="Doodle Noodle Logo" className="w-36" />
+        <img src="/DoodleNoodleLogo.svg" alt="Doodle Noodle Logo" className="w-30" />
       </div>
 
       {/* Title and Description */}
       <h1 className="text-4xl text-teal-500 mb-4 text-center">
         Daily Doodle Challenge
       </h1>
-      <p className="text-lg text-gray-600 mb-6 text-center">
+      <p className="text-sm text-gray-600 mb-6 text-center">
         You’ve got 1:30 to bring today’s prompt to life. No redos. No pressure.
         Just draw, submit, and see how the world responded to the same idea.
       </p>

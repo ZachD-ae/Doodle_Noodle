@@ -1,5 +1,5 @@
 import express from 'express';
-import db from './config/connection.js';
+import connectToDatabase from './config/connection.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
@@ -21,7 +21,7 @@ const server = new ApolloServer({
 
 const startApolloServer = async () => {
     await server.start();
-    await db();
+    await connectToDatabase();
 
     const app = express();
     const PORT = process.env.PORT || 3001;
@@ -32,8 +32,8 @@ const startApolloServer = async () => {
     app.use('/graphql', expressMiddleware(server, {
         context: async ({ req }) => ({
             user: getUserFromToken(req),
-        }),
-    }))
+          }),
+    }));
 
     app.use(express.static(path.join(__dirname, '..', '..', 'client', 'dist')));
 

@@ -54,7 +54,7 @@ const SignUpPage: React.FC = () => {
     <div className="flex flex-col items-center justify-center p-6 min-h-screen bg-gray-50">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <div className="text-center mb-6">
-          <img src="/assets/DoodleNoodleLogo" alt="Doodle Noodle Logo" className="w-36 mx-auto" />
+          <img src="/DoodleNoodleLogo.svg" alt="Doodle Noodle Logo" className="w-36 mx-auto" />
         </div>
 
         <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4">Welcome!</h2>
