@@ -38,6 +38,39 @@ export const resolvers = {
 
       return false;
     },
+
+    getUserDrawings: async (_: any, args: { userId: string }) => {
+      const drawings = await Drawing.find({ artist: args.userId })
+        .populate('prompt')
+        .populate('artist');
+      return drawings;
+    },
+
+    getDrawingsByPrompt: async (_: any, args: { promptId: string, userId?: string }) => {
+      const drawings = await Drawing.find({ prompt: args.promptId })
+        .populate('prompt')
+        .populate('artist')
+        .lean(); // Make plain JS objects so we can add custom fields
+
+      const userId = args.userId?.toString();
+
+      const updatedDrawings = drawings.map(drawing => {
+        return {
+          ...drawing,
+          isOwner: userId && drawing.artist?._id?.toString() === userId
+        };
+      });
+
+      // Sort so that current user's drawing is first if present
+      if (userId) {
+        updatedDrawings.sort((a, b) => {
+          if (a.isOwner === b.isOwner) return 0;
+          return a.isOwner ? -1 : 1;
+        });
+      }
+
+      return updatedDrawings;
+    }
   },
 
   Mutation: {

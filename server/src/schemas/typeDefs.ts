@@ -31,12 +31,15 @@ type DailyPrompt {
     prompt: Prompt
     artist: User
     createdAt: String
+    isOwner: Boolean
   }
     
   type Query {
     me: User
     dailyPrompt: Prompt
     hasSubmittedToday: Boolean
+    getUserDrawings(userId: ID!): [Drawing]!
+    getDrawingsByPrompt(promptId: ID!): [Drawing]!
   }
 
   type Mutation {
