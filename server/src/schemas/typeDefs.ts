@@ -47,7 +47,7 @@ type DailyPrompt {
       password: String!
       confirmPassword: String!
     ): AuthPayload!
-    submitDrawing(image:String): Drawing! 
+    submitDrawing(image:String!): Drawing! 
   }
 `;
 

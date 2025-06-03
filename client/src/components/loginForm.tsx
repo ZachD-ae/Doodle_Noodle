@@ -8,7 +8,7 @@ import Auth from '../utils/auth';
 import type { User } from '../models/user';
 
 // biome-ignore lint/correctness/noEmptyPattern: <explanation>
-const LoginForm = ({ }: { handleModalClose: () => void }) => {
+const LoginForm = ({ handleModalClose }: { handleModalClose: () => void }) => {
     const [userFormData, setUserFormData] = useState<User>({ username: '', email: '', password: ''});
     const [validated] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
@@ -49,7 +49,15 @@ const LoginForm = ({ }: { handleModalClose: () => void }) => {
     };
 
     return (
-        <>
+        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative">
+            <button
+                className="absolute top-2 right-2 text-gray-500 text-2xl"
+                onClick={handleModalClose}
+                aria-label="Close"
+            >
+                ×
+            </button>
+            <h2 className="text-xl mb-4">Login</h2>
             <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
                 <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
                     Something went wrong with your login credentials!
@@ -86,7 +94,7 @@ const LoginForm = ({ }: { handleModalClose: () => void }) => {
                     Submit
                 </Button>
             </Form>
-        </>
+        </div>
     );
 };
 

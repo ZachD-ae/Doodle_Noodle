@@ -2,11 +2,17 @@
   "compilerOptions": {
     "jsx": "react",
     "composite": true,
-    "module": "CommonJS",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
     "outDir": "./dist",
     "esModuleInterop": true,
-        "target": "ES5",
-    "lib": ["DOM", "ES2015"],
+        "target": "ES2018",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es2018"
+    ],
+    
 
   },
   "include": ["src"]
