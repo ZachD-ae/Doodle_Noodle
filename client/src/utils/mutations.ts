@@ -27,7 +27,7 @@ export const ADD_USER = gql`
 `;
 
 export const ADD_DRAWING = gql`
-    mutation addDrawing($id: _id, userId: _id) {
+    mutation addDrawing($id: _id, $userId: _id) {
         addDrawing(id: $id, userId: $userId) {
             token
             user {
