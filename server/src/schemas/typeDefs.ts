@@ -5,6 +5,7 @@ const typeDefs = gql`
     _id: ID!
     username: String!
     email: String!
+    submissionDate: String!
   }
 
   type AuthPayload {
@@ -35,6 +36,7 @@ type DailyPrompt {
   type Query {
     me: User
     dailyPrompt: Prompt
+    hasSubmittedToday: Boolean
   }
 
   type Mutation {
@@ -45,6 +47,7 @@ type DailyPrompt {
       password: String!
       confirmPassword: String!
     ): AuthPayload!
+    submitDrawing(image:String): Drawing! 
   }
 `;
 

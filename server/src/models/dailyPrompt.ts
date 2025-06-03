@@ -1,4 +1,12 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, type Document } from 'mongoose';
+
+import type {IPrompt} from './prompt.js'
+
+export interface IDailyPrompt extends Document {
+  date: string;
+  prompt: IPrompt
+}
+
 
 const dailyPromptSchema = new Schema({
   date: {

@@ -1,4 +1,4 @@
-// see SignupForm.js for comments
+import React from 'react';
 import { useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
@@ -12,7 +12,7 @@ const LoginForm = ({ }: { handleModalClose: () => void }) => {
     const [userFormData, setUserFormData] = useState<User>({ username: '', email: '', password: ''});
     const [validated] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
-
+    
     const [loginUser] = useMutation(LOGIN_USER);
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
