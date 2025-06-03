@@ -1,1 +1,14 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Mansalva&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light+Two&display=swap');
+
 @import "tailwindcss";
+
+@theme {
+ --font-roboto: "Roboto", sans-serif;
+ --font-mansalva: "Mansalva", sans-serif;
+ --font-bebas: "Bebas Neue", sans-serif;
+ --font-shadows: "Shadows Into Light Two", sans-serif;
+
+}
