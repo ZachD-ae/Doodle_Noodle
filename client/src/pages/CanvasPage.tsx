@@ -14,7 +14,10 @@ const CanvasPage: React.FC = () => {
                 setTimer((prevTimer) => prevTimer - 1);
             }, 1000);
         } else if (timer === 0) {
-            
+            //save drawing
+            //add to user profile and date drawing 
+            //submissionDate change true
+
             navigate("/gallery");
         }
 

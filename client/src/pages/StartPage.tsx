@@ -6,6 +6,9 @@ const StartPage: React.FC = () => {
 
     const handleStart = () => {
         // Navigate to the Start Drawing page
+        //add submission date logic
+        //query user 
+        //check if submissiondate is true
         navigate("/canvas");
     };
 
