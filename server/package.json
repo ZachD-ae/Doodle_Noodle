@@ -2,7 +2,7 @@
     "name": "server",
     "version": "1.0.0",
     "description": "",
-    "main": "server.js",
+    "main": "src",
     "type": "module",
     "scripts": {
         "build": "tsc",
@@ -14,12 +14,18 @@
     "license": "ISC",
     "dependencies": {
         "@apollo/server": "^4.10.4",
-        "express": "^4.19.2",
-        "graphql": "^16.9.0",
-        "mongoose": "^8.4.3"
+        "apollo-server-express": "^3.13.0",
+        "bcrypt": "^6.0.0",
+        "dotenv": "^16.5.0",
+        "express": "^4.21.2",
+        "graphql": "^16.11.0",
+        "jsonwebtoken": "^9.0.2",
+        "mongoose": "^8.15.1"
     },
     "devDependencies": {
-        "nodemon": "^3.1.4",
+        "@types/bcrypt": "^5.0.2",
+        "@types/jsonwebtoken": "^9.0.9",
+        "nodemon": "^3.1.10",
         "typescript": "^5.5.2"
     }
 }
