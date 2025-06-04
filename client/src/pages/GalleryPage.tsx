@@ -14,14 +14,14 @@ const GalleryPage: React.FC = () => {
     }, []);
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 min-h-screen bg-gray-50">
+        <div className="flex flex-col items-center justify-center p-6 max-h-screen bg-gray-50">
             <Navbar /> 
 
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl mt-6">
-                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4">
+                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4 font-roboto italic">
                     Today's Prompt:
                 </h2>
-                <p className="text-center text-gray-500 mb-6">{prompt}</p>
+                <p className="text-3xl text-center text-gray-500 mb-6 font-shadows">{prompt}</p>
 
                 {/* Gallery Grid */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
@@ -45,7 +45,7 @@ const GalleryPage: React.FC = () => {
 
                 {/* Download Button */}
                 <button
-                    className="py-2 px-6 bg-teal-500 text-white font-semibold rounded-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300"
                 >
                     Download Today's Artwork
                 </button>
