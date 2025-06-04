@@ -1,6 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Auth from '../utils/auth';
+import SignupForm from '../components/SignupForm';
+import LoginForm from '../components/loginForm';
 
 const LandingPage: React.FC = () => {
+  const [showLogin, setShowLogin] = useState(false);
+  const [showSignup, setShowSignup] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (Auth.loggedIn()) {
+      navigate('/start');
+    }
+  }, []);
+
+
   return (
     <div className="flex flex-col items-center justify-center p-6 min-h-screen bg-gray-50">
       {/* Logo */}
@@ -12,24 +28,36 @@ const LandingPage: React.FC = () => {
       <h1 className="text-5xl font-bold text-black mb-4 text-center font-shadows">
         Daily Doodle <span className="text-black lg:text-6xl">Challenge</span>
       </h1>
-      <p className="text-lg text-gray-600 mb-8 text-center italic max-w-lg font-roboto">
-        You’ve got 30 seconds to bring today’s prompt to life. <span className="font-bold text-black">No redos. No pressure.</span>
-        Just draw, submit, and see how the world responded to the same idea.
-      </p>
-
-      {/* Buttons */}
-      <div className="flex flex-col md:flex-row md:space-x-4 mb-8">
-        <button className="bg-gray-400 text-white py-3 px-8 rounded-md text-lg hover:bg-black font-shadows hover:text-white hover:scale-105 transition-transform duration-300 mb-4 md:mb-0">
-          <a href="/signup" className="text-white">
-            Sign up
-          </a>
+      {/* ...existing content... */}
+      <div className="flex space-x-4 mb-8">
+        <button
+          className="bg-teal-500 text-white py-2 px-6 rounded-md text-lg hover:bg-teal-600"
+          onClick={() => setShowSignup(true)}
+        >
+          Sign up
         </button>
-        <button className="bg-black  text-white py-3 px-8 rounded-md text-lg hover:bg-gray-600 hover:text-black font-shadows hover:scale-105 transition-transform duration-300">
-          <a href="/login" className="text-white">
-            Login to Play
-          </a>
+        <button
+          className="bg-teal-500 text-white py-2 px-6 rounded-md text-lg hover:bg-teal-600"
+          onClick={() => setShowLogin(true)}
+        >
+          Login to Play
         </button>
       </div>
+      {/* Modals */}
+      {showLogin && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <LoginForm handleModalClose={() => setShowLogin(false)} />
+        </div>)}
+      {showSignup && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <SignupForm handleModalClose={() => setShowSignup(false)} />
+        </div>
+        )}
+
+      <p className="text-sm text-gray-600 mb-6 text-center">
+        You’ve got 1:30 to bring today’s prompt to life. No redos. No pressure.
+        Just draw, submit, and see how the world responded to the same idea.
+      </p>
 
       {/* Team Members Section */}
       <div className="mt-8 text-center">
@@ -58,5 +86,6 @@ const LandingPage: React.FC = () => {
     </div>
   );
 };
+
 
 export default LandingPage;

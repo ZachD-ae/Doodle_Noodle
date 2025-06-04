@@ -9,6 +9,8 @@ const GalleryPage: React.FC = () => {
     useEffect(() => {
         const storedDrawings = JSON.parse(localStorage.getItem('drawings') || '[]');
         setDrawings(storedDrawings);
+        //get all user drawings
+        //make sure to watch for user drawings 
     }, []);
 
     return (

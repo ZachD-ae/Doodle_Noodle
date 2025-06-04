@@ -1,11 +1,14 @@
-import mongoose, { Document, Model } from 'mongoose';
+import mongoose, { Document, Model, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
+import  type { IDrawing }  from './drawing.js';
 
 // Interface for User document with isCorrectPassword method
 export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
+  submissionDate: string;
+  drawings:  IDrawing[];
   createdAt: Date;
   isCorrectPassword(password: string): Promise<boolean>;
 }
@@ -14,6 +17,8 @@ const userSchema = new mongoose.Schema<IUser>({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true },
+  submissionDate: { type: String, default: null },
+  drawings: [{type: Schema.Types.ObjectId, ref: 'Drawing'}],
   createdAt: { type: Date, default: Date.now }
 });
 

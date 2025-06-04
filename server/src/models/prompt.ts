@@ -1,4 +1,11 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, type Document } from 'mongoose';
+import { IDrawing } from './drawing';
+
+export interface IPrompt extends Document {
+  text: string;
+  drawings: IDrawing[]
+  dateUsed: Date
+}
 
 const promptSchema = new Schema({
   text: {
@@ -9,7 +16,7 @@ const promptSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Drawing',
   }],
-    dateUsed: {
+  dateUsed: {
     type: Date,
     default: null, // optional
     },

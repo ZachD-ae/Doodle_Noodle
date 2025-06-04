@@ -4,6 +4,7 @@ import Drawing from '../models/drawing.js';
 import { getDailyPrompt } from '../services/dailyPrompt.js';
 import jwt from 'jsonwebtoken';
 
+
 const JWT_SECRET = process.env.JWT_SECRET_KEY || 'somesecretkey';
 
 interface Context {
@@ -27,18 +28,49 @@ export const resolvers = {
     },
 
     hasSubmittedToday: async (_: any, __: any, context: Context) => {
+      //error user not found
       if (!context.user) return false;
+      //today's date
+      const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
+      //compare today to last submissionDate
+      if (context.user.submissionDate === today) return true;
+      //if they match return true user has submitted today
 
-      const prompt = await getDailyPrompt();
-      if (!prompt) return false;
+      return false;
+    },
 
-      const drawing = await Drawing.findOne({
-        artist: context.user.id,
-        prompt: prompt._id,
+    getUserDrawings: async (_: any, args: { userId: string }) => {
+      const drawings = await Drawing.find({ artist: args.userId })
+        .populate('prompt')
+        .populate('artist');
+      return drawings;
+    },
+
+    getDrawingsByPrompt: async (_: any, args: { promptId: string, userId?: string }) => {
+      const drawings = await Drawing.find({ prompt: args.promptId })
+        .populate('prompt')
+        .populate('artist')
+        .lean(); // Make plain JS objects so we can add custom fields
+
+      const userId = args.userId?.toString();
+
+      const updatedDrawings = drawings.map(drawing => {
+        return {
+          ...drawing,
+          isOwner: userId && drawing.artist?._id?.toString() === userId
+        };
       });
 
-      return !!drawing;
-    },
+      // Sort so that current user's drawing is first if present
+      if (userId) {
+        updatedDrawings.sort((a, b) => {
+          if (a.isOwner === b.isOwner) return 0;
+          return a.isOwner ? -1 : 1;
+        });
+      }
+
+      return updatedDrawings;
+    }
   },
 
   Mutation: {
@@ -96,15 +128,23 @@ export const resolvers = {
       if (existing) {
         throw new Error('You’ve already submitted a drawing for today!');
       }
-
-      // Proceed to save drawing
+      //Add drawing to drawing documents
       const newDrawing = await Drawing.create({
+        image: args.image,
         artist: context.user.id,
         prompt: prompt._id,
-        image: args.image,
       });
+      //add drawingId to user drawings and update submission date to todays date
+      const updateUser = await User.findOneAndUpdate(
+        { _id: context.user._id },
+        { 
+          $addToSet: { drawings: newDrawing._id },
+          submissionDate: new Date().toISOString().split('T')[0] // YYYY-MM-DD
+        },
+        { new: true, runValidators: true }
+      );
 
-      return newDrawing;
+      return updateUser;
     }
   }
 };
