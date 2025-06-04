@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; 
 
-const StartPage: React.FC = () => {
+const StartPage = ({ handleModalClose }: { handleModalClose: () => void }) => {
     const navigate = useNavigate();
     
 
@@ -10,11 +10,14 @@ const StartPage: React.FC = () => {
         //add submission date logic
         //query user 
         //check if submissiondate is true
+        
         navigate("/canvas");
+        handleModalClose();
     };
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 min-h-screen bg-gray-50">
+        
+           
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl">
                 <div className="text-center mb-6">
                     <img
@@ -23,21 +26,29 @@ const StartPage: React.FC = () => {
                         className="w-36 mx-auto"
                     />
                 </div>
+                   <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative">
+            <button
+                className="absolute top-2 right-2 text-gray-500 text-2xl"
+                onClick={handleModalClose}
+                aria-label="Close"
+            >
+                ×
+            </button>
 
-                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4">
+                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4 font-shadows">
                     Today's Drawing Prompt is ready, are you?
                 </h2>
-                <p className="text-center text-gray-500 mb-6">
-                    You’ve got 1:30 seconds to bring it to life! Remember: You only get one try each day. <strong>No redos!</strong>
+                <p className="text-center text-gray-500 mb-6 font-roboto">
+                    You’ve got 1:30 seconds to bring it to life! Remember: You only get one try each day. <strong className=' text-black text-2xl italic'>No redos!</strong>
                 </p>
 
                 {/* Start Button */}
                 <div className="flex justify-center">
                     <button
                         onClick={handleStart}
-                        className="py-3 px-6 bg-black text-white font-semibold rounded-md shadow-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        className="py-3 px-6 bg-black text-white font-semibold rounded-md shadow-md font-shadows "
                     >
-                        Start Doodling!
+                        START DOODLING!
                     </button>
                 </div>
             </div>

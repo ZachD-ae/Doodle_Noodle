@@ -1,6 +1,5 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import StartPage from "../pages/StartPage";
 import CanvasPage from "../pages/CanvasPage";
 import GalleryPage from "../pages/GalleryPage";
 import ProfilePage from "../pages/ProfilePage";
@@ -12,7 +11,6 @@ const ProtectedRoutes = () => {
     }
     return (
         <Routes>
-            <Route path="/start" element={<StartPage />} />
             <Route path="/canvas" element={<CanvasPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route path="/profile" element={<ProfilePage />} />

@@ -5,7 +5,7 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-    port: 5173,
+    port: 3000,
     open: true,
     proxy: {
       '/api': {
@@ -13,11 +13,11 @@ export default defineConfig({
         changeOrigin: true,
         secure: false,
       },
-      '/auth': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
+      '/graphql': {
+        target: 'http://localhost:3001/graphql',
         secure: false,
-      },
+        changeOrigin: true
+      }
     },
   },
   publicDir: 'public',

@@ -7,7 +7,7 @@ import "./index.css";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import StartPage from "./pages/StartPage";
+import StartPage from "./components/StartPage";
 import CanvasPage from "./pages/CanvasPage";
 import GalleryPage from "./pages/GalleryPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -22,10 +22,6 @@ const router = createBrowserRouter([
         index: true,
         element: <LandingPage />
       }, 
-      {
-        path: '/start',
-        element: <StartPage />
-      },
       {
         path: '/canvas',
         element: <CanvasPage />
