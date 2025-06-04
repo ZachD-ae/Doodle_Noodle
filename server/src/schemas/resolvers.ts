@@ -22,6 +22,21 @@ function signToken(user: IUser) {
 
 export const resolvers = {
   Query: {
+    getUserData: async (_: any, __: any, context: Context) => {
+      //error user not found
+      if (!context.user) return null;
+      //find user by id
+      const user = await User.findById(context.user.id)
+        .populate('drawings')
+        .select('-password'); // Exclude password field
+      //if user not found return null
+      if (!user) return null;
+      //return user data
+      return user;
+    },
+
+
+
     dailyPrompt: async () => {
       const today = new Date().setHours(0,0,0,0);
       const prompt = await DailyPrompt.findOne({date: today});

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { use, useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Auth from '../utils/auth';
 import SignupForm from '../components/SignupForm';
 import LoginForm from '../components/loginForm';
 import StartPage from '../components/StartPage';
+import { GET_USER_DATA } from '../utils/queries';
+import { useQuery } from '@apollo/client';
+
 
 const LandingPage: React.FC = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -12,25 +15,33 @@ const LandingPage: React.FC = () => {
   const [showStart, setShowStart] = useState(false);
   const navigate = useNavigate();
 
+
+const {data} = useQuery(GET_USER_DATA);
+
   useEffect(()=> {
     if (Auth.loggedIn) {
       setShowStart(true)
+      setShowLogin(false);
+      setShowSignup(false);
     } else {
       setShowStart(false)
-    }
+      
+      return
+    } 
+
+    const userData = data?.getUserData || {};
     //get userdata from server
     //Store user data in localstorage
-    //check if submission date === Date.now.string
-    //if true navigate to gallery
-    //render start page
-  },[])
+    localStorage.setItem('userData', JSON.stringify(userData));
 
-  useEffect(() => {
-    if (Auth.loggedIn()) {
-      console.log("Not Authenticated")
+    //check if submission date === Date.now.string
+    if (userData.submissionDate === new Date().toISOString().split('T')[0]) {
+      navigate('/gallery');
+    } else {
+      setShowStart(true);
     }
-    return
-  },[]);
+
+  },[Auth.loggedIn, data, navigate]);
 
 
   return (
@@ -48,13 +59,17 @@ const LandingPage: React.FC = () => {
       <div className="flex space-x-4 mb-8">
         <button
           className="bg-gray-200 text-black py-2 px-6 rounded-md text-lg hover:bg-black hover:text-white font-shadows hover:scale-110 transition-all duration-300 shadow-lg"
-          onClick={() => setShowSignup(true)}
+          onClick={() => {setShowSignup(true)
+            setShowLogin(false);
+          }}
         >
           Sign up
         </button>
         <button
           className="bg-black text-white py-2 px-6 rounded-md text-lg hover:bg-white hover:text-black font-shadows hover:scale-110 transition-all duration-300"
-          onClick={() => setShowLogin(true)}
+          onClick={() => {setShowLogin(true)
+            setShowSignup(false);
+          }}
         >
           Login to Play
         </button>
@@ -62,11 +77,19 @@ const LandingPage: React.FC = () => {
       {/* Modals */}
       {showLogin && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <LoginForm handleModalClose={() => setShowLogin(false)} />
+          <LoginForm handleModalClose={() => setShowLogin(false)} 
+            onLoginSuccess={() => {
+              setShowLogin(false);
+              setShowStart(true);
+            }} />
         </div>)}
       {showSignup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <SignupForm handleModalClose={() => setShowSignup(false)} />
+        <SignupForm handleModalClose={() => setShowSignup(false)}
+          onSignupSuccess={() => {
+            setShowSignup(false);
+            setShowStart(true);
+          }} />
         </div>
         )}
       {showStart && (<div>
