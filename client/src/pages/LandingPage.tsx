@@ -31,13 +31,13 @@ const LandingPage: React.FC = () => {
       {/* ...existing content... */}
       <div className="flex space-x-4 mb-8">
         <button
-          className="bg-teal-500 text-white py-2 px-6 rounded-md text-lg hover:bg-teal-600"
+          className="bg-gray-200 text-black py-2 px-6 rounded-md text-lg hover:bg-black hover:text-white font-shadows hover:scale-110 transition-all duration-300 shadow-lg"
           onClick={() => setShowSignup(true)}
         >
           Sign up
         </button>
         <button
-          className="bg-teal-500 text-white py-2 px-6 rounded-md text-lg hover:bg-teal-600"
+          className="bg-black text-white py-2 px-6 rounded-md text-lg hover:bg-white hover:text-black font-shadows hover:scale-110 transition-all duration-300"
           onClick={() => setShowLogin(true)}
         >
           Login to Play
@@ -61,7 +61,7 @@ const LandingPage: React.FC = () => {
 
       {/* Team Members Section */}
       <div className="mt-8 text-center">
-        <p className="mb-4 text-lg text-gray-800">By:</p>
+        <p className="mb-4 text-lg text-gray-800 font-roboto font-bold">By:</p>
         <div className="flex justify-center space-x-6">
           <a href="https://github.com/meglanghoffdesign" target="_blank" rel="noopener noreferrer">
             <button className="text-gray-500 font-bold hover:text-black font-roboto">
