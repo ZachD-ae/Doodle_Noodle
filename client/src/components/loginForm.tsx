@@ -8,7 +8,7 @@ import Auth from '../utils/auth';
 import type { User } from '../models/user';
 
 // biome-ignore lint/correctness/noEmptyPattern: <explanation>
-const LoginForm = ({ handleModalClose }: { handleModalClose: () => void }) => {
+const LoginForm = ({ handleModalClose, onLoginSuccess }: { handleModalClose: () => void, onLoginSuccess: () => void }) => {
     const [userFormData, setUserFormData] = useState<User>({ username: '', email: '', password: ''});
     const [validated] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
@@ -37,6 +37,9 @@ const LoginForm = ({ handleModalClose }: { handleModalClose: () => void }) => {
             console.log(data)
             Auth.login(data.login.token);
             handleModalClose()
+            if (onLoginSuccess) {
+                onLoginSuccess();
+            } 
         } catch (err) {
             console.error(err);
             setShowAlert(true);
