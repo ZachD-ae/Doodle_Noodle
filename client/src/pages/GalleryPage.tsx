@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'; // Import the Navbar component
+import auth from '../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
 const GalleryPage: React.FC = () => {
     const [drawings, setDrawings] = useState<string[]>([]); // Store all the drawings
     const [prompt, setPrompt] = useState("An evil scientist bringing its creation to life"); // Drawing prompt
-
+    const navigate = useNavigate();
     // Fetch the drawings from localStorage
     useEffect(() => {
+        if (!auth.loggedIn()) {
+            console.log("Please signin first")
+            navigate('/');
+        }
         const storedDrawings = JSON.parse(localStorage.getItem('drawings') || '[]');
         setDrawings(storedDrawings);
         //get all user drawings
         //make sure to watch for user drawings 
-    }, []);
+    }, [navigate]);
 
     return (
         <div className="flex flex-col items-center justify-center p-6 max-h-screen bg-gray-50">

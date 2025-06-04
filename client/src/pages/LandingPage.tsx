@@ -1,7 +1,7 @@
 import React, { use, useState } from 'react';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Auth from '../utils/auth';
+import auth from '../utils/auth';
 import SignupForm from '../components/SignupForm';
 import LoginForm from '../components/loginForm';
 import StartPage from '../components/StartPage';
@@ -19,29 +19,22 @@ const LandingPage: React.FC = () => {
 const {data} = useQuery(GET_USER_DATA);
 
   useEffect(()=> {
-    if (Auth.loggedIn) {
-      setShowStart(true)
-      setShowLogin(false);
-      setShowSignup(false);
+    if (auth.loggedIn()) {
+      const userData = data?.getUserData || {};
+      console.log(userData)
+      localStorage.setItem('userData', JSON.stringify(userData));
+      if (userData.submissionDate === new Date().toISOString().split('T')[0]) {
+        navigate('/gallery');
+      } else {
+        setShowStart(true)
+        setShowLogin(false);
+        setShowSignup(false);
+      }
     } else {
-      setShowStart(false)
-      
-      return
+      setShowStart(false);
     } 
 
-    const userData = data?.getUserData || {};
-    //get userdata from server
-    //Store user data in localstorage
-    localStorage.setItem('userData', JSON.stringify(userData));
-
-    //check if submission date === Date.now.string
-    if (userData.submissionDate === new Date().toISOString().split('T')[0]) {
-      navigate('/gallery');
-    } else {
-      setShowStart(true);
-    }
-
-  },[Auth.loggedIn, data, navigate]);
+  },[auth.loggedIn, data, navigate]);
 
 
   return (
@@ -74,8 +67,10 @@ const {data} = useQuery(GET_USER_DATA);
           Login to Play
         </button>
       </div>
+
+
       {/* Modals */}
-      {showLogin && (
+      {!auth.loggedIn() && showLogin && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <LoginForm handleModalClose={() => setShowLogin(false)} 
             onLoginSuccess={() => {
@@ -83,7 +78,7 @@ const {data} = useQuery(GET_USER_DATA);
               setShowStart(true);
             }} />
         </div>)}
-      {showSignup && (
+      {!auth.loggedIn() && showSignup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
         <SignupForm handleModalClose={() => setShowSignup(false)}
           onSignupSuccess={() => {
@@ -92,10 +87,11 @@ const {data} = useQuery(GET_USER_DATA);
           }} />
         </div>
         )}
-      {showStart && (<div>
+
+      {auth.loggedIn() && showStart && (<div>
         <StartPage handleModalClose={() => setShowStart(false)} />
       </div>
-    )}
+      )}
 
       <p className="text-sm text-gray-600 mb-6 text-center">
         You’ve got 1:30 to bring today’s prompt to life. No redos. No pressure.

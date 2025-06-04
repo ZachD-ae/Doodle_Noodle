@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'; // Import the Navbar component
+import { useNavigate } from 'react-router-dom';
+import auth from '../utils/auth';
 
 const ProfilePage: React.FC = () => {
     const [drawings, setDrawings] = useState<string[]>([]); // Store the user's drawings
     const [streak, setStreak] = useState<number>(0); // Store the user's streak
     const [prompt, setPrompt] = useState("An evil scientist bringing its creation to life"); // Drawing prompt
+    const navigate = useNavigate();
 
     // Fetch the saved drawings from localStorage
     useEffect(() => {
+        if (!auth.loggedIn()) {
+            navigate('/')
+        }
         const storedDrawings = JSON.parse(localStorage.getItem('drawings') || '[]');
         setDrawings(storedDrawings);
 
