@@ -23,10 +23,6 @@ const router = createBrowserRouter([
         element: <LandingPage />
       }, 
       {
-        path: '/start',
-        element: <StartPage />
-      },
-      {
         path: '/canvas',
         element: <CanvasPage />
       },

@@ -3,6 +3,7 @@ import User from '../models/user.js';
 import Drawing from '../models/drawing.js';
 import { getDailyPrompt } from '../services/dailyPrompt.js';
 import jwt from 'jsonwebtoken';
+import DailyPrompt from '../models/dailyPrompt.js';
 
 
 const JWT_SECRET = process.env.JWT_SECRET_KEY || 'somesecretkey';
@@ -22,7 +23,13 @@ function signToken(user: IUser) {
 export const resolvers = {
   Query: {
     dailyPrompt: async () => {
-      const prompt = await getDailyPrompt();
+      const today = new Date().setHours(0,0,0,0);
+      const prompt = await DailyPrompt.findOne({date: today});
+      if(!prompt) {
+        getDailyPrompt();
+        console.log("Error no daily prompt found")
+        return
+      }
       console.log('dailyPrompt resolver result:', prompt);
       return prompt;
     },

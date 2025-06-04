@@ -12,11 +12,25 @@ const LandingPage: React.FC = () => {
   const [showStart, setShowStart] = useState(false);
   const navigate = useNavigate();
 
+  useEffect(()=> {
+    if (Auth.loggedIn) {
+      setShowStart(true)
+    } else {
+      setShowStart(false)
+    }
+    //get userdata from server
+    //Store user data in localstorage
+    //check if submission date === Date.now.string
+    //if true navigate to gallery
+    //render start page
+  },[])
+
   useEffect(() => {
     if (Auth.loggedIn()) {
-      navigate('/start');
+      console.log("Not Authenticated")
     }
-  }, []);
+    return
+  },[]);
 
 
   return (
@@ -55,10 +69,10 @@ const LandingPage: React.FC = () => {
         <SignupForm handleModalClose={() => setShowSignup(false)} />
         </div>
         )}
-         {showStart && Auth.loggedIn() && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <StartPage handleModalClose={() => setShowStart(false)} />
-        </div>)}
+      {showStart && (<div>
+        <StartPage handleModalClose={() => setShowStart(false)} />
+      </div>
+    )}
 
       <p className="text-sm text-gray-600 mb-6 text-center">
         You’ve got 1:30 to bring today’s prompt to life. No redos. No pressure.

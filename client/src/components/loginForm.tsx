@@ -29,13 +29,14 @@ const LoginForm = ({ handleModalClose }: { handleModalClose: () => void }) => {
             event.preventDefault();
             event.stopPropagation();
         }
-
+        console.log(userFormData.email, userFormData.password)
         try {
             const { data } = await loginUser({
                 variables: { email: userFormData.email, password: userFormData.password }
             });
-
+            console.log(data)
             Auth.login(data.login.token);
+            handleModalClose()
         } catch (err) {
             console.error(err);
             setShowAlert(true);
@@ -97,7 +98,6 @@ const LoginForm = ({ handleModalClose }: { handleModalClose: () => void }) => {
                     
                 </Form.Group>
                 <Button className='w-full py-2 font-shadows text-white bg-black hover:bg-white hover:text-black hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-black transition duration-300 rounded-md'
-                    onClick={handleModalClose}
                     disabled={!(userFormData.email && userFormData.password)}
                     type='submit'
                     variant='success'>
