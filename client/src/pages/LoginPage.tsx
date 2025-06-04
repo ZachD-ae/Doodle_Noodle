@@ -1,6 +1,4 @@
- 
-
-import React from 'react';
+ import React from 'react';
 import { useState } from 'react';
 import type { ChangeEvent, FormEvent } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
@@ -123,4 +121,3 @@ const LoginPage = ({ handleModalClose }: { handleModalClose: () => void }) => {
 
 
 export default LoginPage;
-

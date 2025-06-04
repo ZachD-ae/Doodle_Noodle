@@ -57,37 +57,47 @@ const LoginForm = ({ handleModalClose }: { handleModalClose: () => void }) => {
             >
                 ×
             </button>
-            <h2 className="text-xl mb-4">Login</h2>
+            <div className="text-center mb-6">
+                <img src="/DoodleNoodleLogo.svg" alt="Doodle Noodle Logo" className="w-36 mx-auto" />
+            </div>
+            <h2 className="text-2xl font-bold text-center text-black mb-6 font-shadows">Login</h2>
             <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
                 <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
                     Something went wrong with your login credentials!
                 </Alert>
-                <Form.Group className='mb-3'>
-                    <Form.Label htmlFor='email'>Email</Form.Label>
-                    <Form.Control
-                        type='text'
-                        placeholder='Your email'
-                        name='email'
-                        onChange={handleInputChange}
-                        value={userFormData.email || ''}
-                        required
-                    />
-                    <Form.Control.Feedback type='invalid'>Email is required!</Form.Control.Feedback>
+                <Form.Group className='mb-3 p-1 font-roboto font-bold'>
+                    <div>
+                        <Form.Label htmlFor='email'>Email</Form.Label>
+                         </div>
+                        <Form.Control className='mb-3 bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 font-roboto rounded-md'
+                            type='text'
+                            placeholder='Your email'
+                            name='email'
+                            onChange={handleInputChange}
+                            value={userFormData.email || ''}
+                            required
+                        />
+                        <Form.Control.Feedback className='font-roboto italic font-light text-gray-200 hover:text-red-400' type='invalid'>Email is required!</Form.Control.Feedback>
+                   
                 </Form.Group>
 
-                <Form.Group className='mb-3'>
-                    <Form.Label htmlFor='password'>Password</Form.Label>
-                    <Form.Control
-                        type='password'
-                        placeholder='Your password'
-                        name='password'
-                        onChange={handleInputChange}
-                        value={userFormData.password || ''}
-                        required
-                    />
-                    <Form.Control.Feedback type='invalid'>Password is required!</Form.Control.Feedback>
+                <Form.Group className='mb-3 p-1 font-roboto font-bold'>
+                    <div>
+                        <Form.Label htmlFor='password'>Password</Form.Label>
+                        </div>
+                        <Form.Control className='mb-3 bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 font-roboto rounded-md'
+                            type='password'
+                            placeholder='Your password'
+                            name='password'
+                            onChange={handleInputChange}
+                            value={userFormData.password || ''}
+                            required
+                        />
+                        <Form.Control.Feedback className='font-roboto italic font-light text-gray-200 hover:text-red-400' type='invalid'>Password is required!</Form.Control.Feedback>
+                    
                 </Form.Group>
-                <Button
+                <Button className='w-full py-2 font-shadows text-white bg-black hover:bg-white hover:text-black hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-black transition duration-300 rounded-md'
+                    onClick={handleModalClose}
                     disabled={!(userFormData.email && userFormData.password)}
                     type='submit'
                     variant='success'>
