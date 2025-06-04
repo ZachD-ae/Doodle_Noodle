@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 const StartPage: React.FC = () => {
     const navigate = useNavigate();
+    
 
     const handleStart = () => {
         // Navigate to the Start Drawing page
