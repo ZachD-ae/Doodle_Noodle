@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import Auth from '../utils/auth';
 import SignupForm from '../components/SignupForm';
 import LoginForm from '../components/loginForm';
+import StartPage from '../components/StartPage';
 
 const LandingPage: React.FC = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
+  const [showStart, setShowStart] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,6 +55,10 @@ const LandingPage: React.FC = () => {
         <SignupForm handleModalClose={() => setShowSignup(false)} />
         </div>
         )}
+         {showStart && Auth.loggedIn() && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <StartPage handleModalClose={() => setShowStart(false)} />
+        </div>)}
 
       <p className="text-sm text-gray-600 mb-6 text-center">
         You’ve got 1:30 to bring today’s prompt to life. No redos. No pressure.

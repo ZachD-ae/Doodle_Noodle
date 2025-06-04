@@ -79,7 +79,7 @@ const SignupForm = ({ handleModalClose }: { handleModalClose: () => void }) => {
                     Something went wrong with your signup!
                 </Alert>
             
-                <Form.Group className=' flex mb-3 p-1 font-roboto font-bold'>
+                <Form.Group className=' mb-3 p-1 font-roboto font-bold'>
                     <div>
                     <Form.Label htmlFor='username'>Username</Form.Label>
                     </div>
