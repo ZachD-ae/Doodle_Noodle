@@ -32,7 +32,7 @@ const ProfilePage: React.FC = () => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 min-h-screen bg-gray-50">
+        <div className="flex flex-col items-center justify-center p-6 max-h-screen bg-gray-50">
             <Navbar /> {/* Add the Navbar component here */}
 
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl mt-6">
