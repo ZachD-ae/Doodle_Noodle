@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; 
 
-const StartPage = ({ handleModalClose }: { handleModalClose: () => void }) => {
+const StartPage = () => {
     const navigate = useNavigate();
     
 
@@ -12,7 +12,6 @@ const StartPage = ({ handleModalClose }: { handleModalClose: () => void }) => {
         //check if submissiondate is true
         
         navigate("/canvas");
-        handleModalClose();
     };
 
     return (
@@ -27,13 +26,7 @@ const StartPage = ({ handleModalClose }: { handleModalClose: () => void }) => {
                     />
                 </div>
                    <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative">
-            <button
-                className="absolute top-2 right-2 text-gray-500 text-2xl"
-                onClick={handleModalClose}
-                aria-label="Close"
-            >
-                ×
-            </button>
+            
 
                 <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4 font-shadows">
                     Today's Drawing Prompt is ready, are you?

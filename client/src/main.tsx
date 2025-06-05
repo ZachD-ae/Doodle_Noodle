@@ -5,8 +5,7 @@ import App from "./App";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import LandingPage from "./pages/LandingPage";
-import LoginPage from "./pages/LoginPage";
-import SignUpPage from "./pages/SignUpPage";
+
 import StartPage from "./pages/StartPage";
 import CanvasPage from "./pages/CanvasPage";
 import GalleryPage from "./pages/GalleryPage";
@@ -21,6 +20,10 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <LandingPage />
+      },
+      {
+        path: '/start',
+        element: <StartPage />
       },
       {
         path: '/canvas',

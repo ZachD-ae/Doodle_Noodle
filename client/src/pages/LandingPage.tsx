@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import auth from '../utils/auth';
 import SignupForm from '../components/SignupForm';
 import LoginForm from '../components/loginForm';
-import StartPage from './StartPage';
 import { GET_USER_DATA } from '../utils/queries';
 import { useQuery } from '@apollo/client';
 
@@ -12,7 +11,6 @@ import { useQuery } from '@apollo/client';
 const LandingPage: React.FC = () => {
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
-  const [showStart, setShowStart] = useState(false);
   const navigate = useNavigate();
 
 
@@ -26,12 +24,11 @@ const LandingPage: React.FC = () => {
       if (userData.submissionDate === new Date().toISOString().split('T')[0]) {
         navigate('/gallery');
       } else {
-        setShowStart(true)
         setShowLogin(false);
         setShowSignup(false);
       }
     } else {
-      setShowStart(false);
+
     }
 
   }, [auth.loggedIn, data, navigate]);
@@ -54,8 +51,7 @@ const LandingPage: React.FC = () => {
           className="bg-gray-200 text-black py-2 px-6 rounded-md text-lg hover:bg-black hover:text-white font-shadows hover:scale-110 transition-all duration-300 shadow-lg"
           onClick={() => {
             setShowSignup(true)
-            setShowLogin(false);
-          }}
+            setShowLogin(false);}}
         >
           Sign up
         </button>
@@ -76,23 +72,14 @@ const LandingPage: React.FC = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <LoginForm handleModalClose={() => setShowLogin(false)}
             onLoginSuccess={() => {
-              setShowLogin(false);
-              setShowStart(true);
-            }} />
+              setShowLogin(false);}} />
         </div>)}
       {!auth.loggedIn() && showSignup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <SignupForm handleModalClose={() => setShowSignup(false)}
-            onSignupSuccess={() => {
-              setShowSignup(false);
-              setShowStart(true);
-            }} />
+            onSignUpSuccess={() => {
+              navigate('/start')}} />
         </div>
-      )}
-
-      {auth.loggedIn() && showStart && (<div>
-        <StartPage handleModalClose={() => setShowStart(false)} />
-      </div>
       )}
 
       <p className="text-sm text-gray-600 mb-6 text-center">

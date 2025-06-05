@@ -10,7 +10,7 @@ const typeDefs = gql`
 
   type AuthPayload {
     token: String!
-    user: User!
+    user: User
   }
 
   type Prompt {
