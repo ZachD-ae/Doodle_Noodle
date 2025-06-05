@@ -35,7 +35,7 @@ type DailyPrompt {
   }
     
   type Query {
-    me: User
+    getUserData: User
     dailyPrompt: Prompt
     hasSubmittedToday: Boolean
     getUserDrawings(userId: ID!): [Drawing]!

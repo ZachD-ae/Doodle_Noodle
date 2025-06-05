@@ -1,11 +1,13 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import auth from '../utils/auth';
 
 const Navbar: React.FC = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
         // Handle logout functionality here (e.g., clear session, JWT token)
+        auth.logout()
         navigate('/'); // Redirect to the login page or home page after logout
     };
 

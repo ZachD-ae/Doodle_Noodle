@@ -4,6 +4,7 @@ import Drawing from '../models/drawing.js';
 import { getDailyPrompt } from '../services/dailyPrompt.js';
 import jwt from 'jsonwebtoken';
 import DailyPrompt from '../models/dailyPrompt.js';
+import { Query } from 'mongoose';
 
 
 const JWT_SECRET = process.env.JWT_SECRET_KEY || 'somesecretkey';
@@ -38,7 +39,7 @@ export const resolvers = {
 
 
     dailyPrompt: async () => {
-      const today = new Date().setHours(0,0,0,0);
+      const today = new Date().toISOString().split('T')[0];
       const prompt = await DailyPrompt.findOne({date: today});
       if(!prompt) {
         getDailyPrompt();
@@ -53,7 +54,7 @@ export const resolvers = {
       //error user not found
       if (!context.user) return false;
       //today's date
-      const today = new Date().toISOString().split('T')[0]; // 'YYYY-MM-DD'
+      const today = new Date().toISOString().split('T')[0];
       //compare today to last submissionDate
       if (context.user.submissionDate === today) return true;
       //if they match return true user has submitted today
@@ -138,7 +139,8 @@ export const resolvers = {
     submitDrawing: async (_: any, args: { image: string }, context: Context) => {
       if (!context.user) throw new Error('Not authenticated');
 
-      const prompt = await getDailyPrompt();
+      const today = new Date().toISOString().split('T')[0];
+      const prompt = await DailyPrompt.findOne({ date: today });
       if (!prompt) throw new Error('No active prompt today');
 
       // Check if user already submitted for this prompt

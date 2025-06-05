@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Canvas from '../components/ui/Canvas'; 
 import { useNavigate } from 'react-router-dom'; 
+import auth from '../utils/auth';
 
 const CanvasPage: React.FC = () => {
     const [timer, setTimer] = useState(15); 
@@ -8,6 +9,9 @@ const CanvasPage: React.FC = () => {
     const navigate = useNavigate(); 
     
     useEffect(() => {
+        if (!auth.loggedIn()) {
+            navigate('/')
+        }
         let interval: any;
         if (timer > 0) {
             interval = setInterval(() => {

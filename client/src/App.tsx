@@ -8,8 +8,8 @@ import {
   createHttpLink
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import Auth from './utils/auth';
-import ProtectedRoutes from './components/ProtectedRoutes';
+
+// import ProtectedRoutes from './components/ProtectedRoutes';
 
 import { Navbar } from 'react-bootstrap';
 
@@ -36,7 +36,8 @@ const App = () => {
   return (
     <ApolloProvider client={client}>
       <Navbar />
-      {Auth.loggedIn() ? <ProtectedRoutes /> : <Outlet />}
+      {/* {Auth.loggedIn() ? <ProtectedRoutes /> : <Outlet />} */}
+      <Outlet />
     </ApolloProvider>
   );
 };
