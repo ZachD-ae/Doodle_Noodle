@@ -7,7 +7,7 @@ import "./index.css";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
-import StartPage from "./components/StartPage";
+import StartPage from "./pages/StartPage";
 import CanvasPage from "./pages/CanvasPage";
 import GalleryPage from "./pages/GalleryPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <LandingPage />
-      }, 
+      },
       {
         path: '/canvas',
         element: <CanvasPage />
@@ -40,5 +40,5 @@ const router = createBrowserRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <RouterProvider router= {router} />
+  <RouterProvider router={router} />
 );

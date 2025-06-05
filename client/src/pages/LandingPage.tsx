@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import auth from '../utils/auth';
 import SignupForm from '../components/SignupForm';
 import LoginForm from '../components/loginForm';
-import StartPage from '../components/StartPage';
+import StartPage from './StartPage';
 import { GET_USER_DATA } from '../utils/queries';
 import { useQuery } from '@apollo/client';
 
@@ -16,9 +16,9 @@ const LandingPage: React.FC = () => {
   const navigate = useNavigate();
 
 
-const {data} = useQuery(GET_USER_DATA);
+  const { data } = useQuery(GET_USER_DATA);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (auth.loggedIn()) {
       const userData = data?.getUserData || {};
       console.log(userData)
@@ -32,9 +32,9 @@ const {data} = useQuery(GET_USER_DATA);
       }
     } else {
       setShowStart(false);
-    } 
+    }
 
-  },[auth.loggedIn, data, navigate]);
+  }, [auth.loggedIn, data, navigate]);
 
 
   return (
@@ -52,7 +52,8 @@ const {data} = useQuery(GET_USER_DATA);
       <div className="flex space-x-4 mb-8">
         <button
           className="bg-gray-200 text-black py-2 px-6 rounded-md text-lg hover:bg-black hover:text-white font-shadows hover:scale-110 transition-all duration-300 shadow-lg"
-          onClick={() => {setShowSignup(true)
+          onClick={() => {
+            setShowSignup(true)
             setShowLogin(false);
           }}
         >
@@ -60,7 +61,8 @@ const {data} = useQuery(GET_USER_DATA);
         </button>
         <button
           className="bg-black text-white py-2 px-6 rounded-md text-lg hover:bg-white hover:text-black font-shadows hover:scale-110 transition-all duration-300"
-          onClick={() => {setShowLogin(true)
+          onClick={() => {
+            setShowLogin(true)
             setShowSignup(false);
           }}
         >
@@ -72,7 +74,7 @@ const {data} = useQuery(GET_USER_DATA);
       {/* Modals */}
       {!auth.loggedIn() && showLogin && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <LoginForm handleModalClose={() => setShowLogin(false)} 
+          <LoginForm handleModalClose={() => setShowLogin(false)}
             onLoginSuccess={() => {
               setShowLogin(false);
               setShowStart(true);
@@ -80,13 +82,13 @@ const {data} = useQuery(GET_USER_DATA);
         </div>)}
       {!auth.loggedIn() && showSignup && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-        <SignupForm handleModalClose={() => setShowSignup(false)}
-          onSignupSuccess={() => {
-            setShowSignup(false);
-            setShowStart(true);
-          }} />
+          <SignupForm handleModalClose={() => setShowSignup(false)}
+            onSignupSuccess={() => {
+              setShowSignup(false);
+              setShowStart(true);
+            }} />
         </div>
-        )}
+      )}
 
       {auth.loggedIn() && showStart && (<div>
         <StartPage handleModalClose={() => setShowStart(false)} />
@@ -121,7 +123,7 @@ const {data} = useQuery(GET_USER_DATA);
       </div>
 
       {/* Placeholder for empty sections */}
-    
+
     </div>
   );
 };
