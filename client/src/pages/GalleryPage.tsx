@@ -31,7 +31,7 @@ const GalleryPage: React.FC = () => {
         // Create a temporary <a> tag to download the image
         const link = document.createElement('a');
         link.href = image;
-        link.download = `daily-doodle-${new Date().toISOString().slice(0, 10)}.png`;
+        link.download = `doodle-noodle-${new Date().toISOString().slice(0, 10)}.png`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
