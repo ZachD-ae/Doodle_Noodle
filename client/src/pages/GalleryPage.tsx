@@ -19,6 +19,24 @@ const GalleryPage: React.FC = () => {
         //make sure to watch for user drawings 
     }, [navigate]);
 
+    const downloadPendingDrawing = () => {
+        const pending = localStorage.getItem('pendingDrawing');
+        if (!pending) {
+            console.warn("No pending drawing found in localStorage.");
+            return;
+        }
+
+        const { image } = JSON.parse(pending);
+
+        // Create a temporary <a> tag to download the image
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = `daily-doodle-${new Date().toISOString().slice(0, 10)}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
     return (
         <div className="flex flex-col items-center justify-center p-6 max-h-screen bg-gray-50">
             <Navbar /> 
@@ -51,6 +69,7 @@ const GalleryPage: React.FC = () => {
 
                 {/* Download Button */}
                 <button
+                    onClick={downloadPendingDrawing}
                     className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300"
                 >
                     Download Today's Artwork

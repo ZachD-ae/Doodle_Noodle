@@ -3,8 +3,7 @@ import User from '../models/user.js';
 import Drawing from '../models/drawing.js';
 import { getDailyPrompt } from '../services/dailyPrompt.js';
 import jwt from 'jsonwebtoken';
-import DailyPrompt from '../models/dailyPrompt.js';
-import { Query } from 'mongoose';
+import DailyPrompt from '../models/dailyPrompt.js'
 
 
 const JWT_SECRET = process.env.JWT_SECRET_KEY || 'somesecretkey';
