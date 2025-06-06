@@ -17,6 +17,7 @@ const SignupForm = ({ handleModalClose, onSignupSuccess }: { handleModalClose: (
     const [showAlert, setShowAlert] = useState(false);
 
     const [addUser] = useMutation(ADD_USER);
+   
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -60,81 +61,96 @@ const SignupForm = ({ handleModalClose, onSignupSuccess }: { handleModalClose: (
         });
     };
 
-    return (
-        <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative">
-            <button
-                className="absolute top-2 right-2 text-gray-500 text-2xl"
-                onClick={handleModalClose}
-                aria-label="Close"
-            >
-                ×
-            </button>
+return (
+        <div className="fixed inset-4 mb- flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md relative">
+                <button
+                    className="absolute top-2 right-2 text-gray-500 text-2xl"
+                    onClick={handleModalClose}
+                    aria-label="Close"
+                >
+                    ×
+                </button>
 
-             <div className="text-center mb-6">
-                <img src="/DoodleNoodleLogo.svg" alt="Doodle Noodle Logo" className="w-36 mx-auto" />
-            </div>
+                <div className="text-center mb-6">
+                    <img src="/DoodleNoodleLogo.svg" alt="Doodle Noodle Logo" className="w-36 mx-auto" />
+                </div>
 
-            <h2 className="text-2xl font-bold text-center text-black mb-6 font-shadows">Sign Up</h2>
-            {/* This is needed for the validation functionality above */}
-            <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
-                {/* show alert if server response is bad */}
-                <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant='danger'>
+                <h2 className="text-2xl font-bold text-center text-black mb-6 font-shadows">Let's Doodle!</h2>
+                {/* Alert if there's an error */}
+                <Alert dismissible onClose={() => setShowAlert(false)} show={showAlert} variant="danger">
                     Something went wrong with your signup!
                 </Alert>
-            
-                <Form.Group className=' mb-3 p-1 font-roboto font-bold'>
-                    <div>
-                    <Form.Label htmlFor='username'>Username</Form.Label>
-                    </div>
-                    <Form.Control className='mb-3 bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 font-roboto rounded-md'
-                        type='text'
-                        placeholder='Your username'
-                        name='username'
-                        onChange={handleInputChange}
-                        value={userFormData.username || ''}
-                        required
-                    />
-                    <Form.Control.Feedback className='font-roboto italic font-light text-gray-200 hover:text-red-400' type='invalid'>Username is required!</Form.Control.Feedback>
-                </Form.Group>
 
-                <Form.Group className='mb-3 p-1 font-roboto font-bold'> 
-                    <div>
-                    <Form.Label htmlFor='email'>Email</Form.Label>
-                    </div>
-                    <Form.Control className='mb-3 bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 font-roboto rounded-md'
-                        type='email'
-                        placeholder='Your email address'
-                        name='email'
-                        onChange={handleInputChange}
-                        value={userFormData.email || ''}
-                        required
-                    />
-                    <Form.Control.Feedback className='font-roboto italic font-light text-gray-200 hover:text-red-400' type='invalid'>Email is required!</Form.Control.Feedback>
-                </Form.Group>
+                <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
+                 <Form.Group className="mb-3 p-1 font-roboto font-bold flex flex-col">
+    <Form.Label htmlFor="username">Username</Form.Label>
+    <Form.Control
+        className="mb-3 bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 font-roboto rounded-md"
+        type="text"
+        placeholder="Your username"
+        name="username"
+        onChange={handleInputChange}
+        value={userFormData.username || ''}
+        required
+    />
+    <Form.Control.Feedback
+        className="font-roboto italic font-light text-gray-200 hover:text-red-400"
+        type="invalid"
+    >
+        Username is required!
+    </Form.Control.Feedback>
+</Form.Group> 
 
-                <Form.Group className='mb-3 p-1 font-roboto font-bold'>
-                    <div>
-                    <Form.Label htmlFor='password'>Password</Form.Label>
-                    </div>
-                    <Form.Control className='mb-3 bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 font-roboto rounded-md'
-                        type='password'
-                        placeholder='Your password'
-                        name='password'
-                        onChange={handleInputChange}
-                        value={userFormData.password || ''}
-                        required
-                    />
-                    <Form.Control.Feedback className='font-roboto italic font-light text-gray-200 hover:text-red-400' type='invalid'>Password is required!</Form.Control.Feedback>
-                </Form.Group>
-                
-                <Button className='w-full py-2 font-shadows text-white bg-black hover:bg-white hover:text-black hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-black transition duration-300 rounded-md'
-                    onClick={handleModalClose}
-                    disabled={!(userFormData.username && userFormData.email && userFormData.password)}
-                    type='submit'
-                    variant='success'>
-                    Submit
-                </Button>
-            </Form>
+                    <Form.Group className="mb-3 p-1 font-roboto font-bold flex flex-col">
+    <Form.Label htmlFor="email">Email</Form.Label>
+    <Form.Control
+        className="mb-3 bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 font-roboto rounded-md"
+        type="email"
+        placeholder="Your email address"
+        name="email"
+        onChange={handleInputChange}
+        value={userFormData.email || ''}
+        required
+    />
+    <Form.Control.Feedback
+        className="font-roboto italic font-light text-gray-200 hover:text-red-400"
+        type="invalid"
+    >
+        Email is required!
+    </Form.Control.Feedback>
+</Form.Group>
+
+<Form.Group className="mb-3 p-1 font-roboto font-bold flex flex-col">
+    <Form.Label htmlFor="password">Password</Form.Label>
+    <Form.Control
+        className="mb-3 bg-gray-300 hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-500 font-roboto rounded-md"
+        type="password"
+        placeholder="Your password"
+        name="password"
+        onChange={handleInputChange}
+        value={userFormData.password || ''}
+        required
+    />
+    <Form.Control.Feedback
+        className="font-roboto italic font-light text-gray-200 hover:text-red-400"
+        type="invalid"
+    >
+        Password is required!
+    </Form.Control.Feedback>
+</Form.Group>
+
+                    <Button
+                        className="w-full py-2 font-shadows text-white bg-black hover:bg-white hover:text-black hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-black transition duration-300 rounded-md"
+                        onClick={handleModalClose}
+                        disabled={!(userFormData.username && userFormData.email && userFormData.password)}
+                        type="submit"
+                        variant="success"
+                    >
+                        Submit
+                    </Button>
+                </Form>
+            </div>
         </div>
     );
 };
