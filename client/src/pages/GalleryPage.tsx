@@ -7,7 +7,7 @@ const GalleryPage: React.FC = () => {
     const [drawings, setDrawings] = useState<string[]>([]); // Store all the drawings
     const [prompt, setPrompt] = useState("An evil scientist bringing its creation to life"); // Drawing prompt
     const navigate = useNavigate();
-    // Fetch the drawings from localStorage
+    
     useEffect(() => {
         if (!auth.loggedIn()) {
             console.log("Please signin first")
@@ -15,6 +15,7 @@ const GalleryPage: React.FC = () => {
         }
         const storedDrawings = JSON.parse(localStorage.getItem('drawings') || '[]');
         setDrawings(storedDrawings);
+        // Fetch the drawings from localStorage
         //get all user drawings
         //make sure to watch for user drawings 
     }, [navigate]);

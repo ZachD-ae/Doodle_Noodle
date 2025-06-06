@@ -1,9 +1,17 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; 
+import { useEffect } from 'react';
+import auth from '../utils/auth'; 
 
 const StartPage = ({ handleModalClose }: { handleModalClose: () => void }) => {
     const navigate = useNavigate();
-    
+
+useEffect(() => {
+     if (!auth.loggedIn()) {
+    console.log("Please signin first")
+    navigate('/');
+            }
+        }, [navigate]);
 
     const handleStart = () => {
         // Navigate to the Start Drawing page
