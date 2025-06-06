@@ -71,7 +71,7 @@ const GalleryPage: React.FC = () => {
                 {/* Download Button */}
                 <button
                     onClick={downloadPendingDrawing}
-                    className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300"
+                    className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300 font-shadows"
                 >
                     Download Today's Artwork
                 </button>
