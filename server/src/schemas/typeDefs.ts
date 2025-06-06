@@ -22,6 +22,7 @@ const typeDefs = gql`
   }
 
 type DailyPrompt {
+  _id: ID!
   date: String!
   prompt: Prompt!
 }
@@ -37,7 +38,7 @@ type DailyPrompt {
     
   type Query {
     getUserData: User
-    dailyPrompt: Prompt
+    dailyPrompt: DailyPrompt!
     hasSubmittedToday: Boolean
     getUserDrawings(userId: ID!): [Drawing]!
     getDrawingsByPrompt(promptId: ID!): [Drawing]!
@@ -51,7 +52,7 @@ type DailyPrompt {
       password: String!
       confirmPassword: String!
     ): AuthPayload!
-    submitDrawing(image:String!): Drawing! 
+    submitDrawing(image:String!): Drawing!
   }
 `;
 
