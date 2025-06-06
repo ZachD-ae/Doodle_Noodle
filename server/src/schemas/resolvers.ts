@@ -3,7 +3,8 @@ import User from '../models/user.js';
 import Drawing from '../models/drawing.js';
 import { getDailyPrompt } from '../services/dailyPrompt.js';
 import jwt from 'jsonwebtoken';
-import DailyPrompt from '../models/dailyPrompt.js'
+import DailyPrompt from '../models/dailyPrompt.js';
+
 
 
 const JWT_SECRET = process.env.JWT_SECRET_KEY || 'somesecretkey';
@@ -30,11 +31,13 @@ export const resolvers = {
         .populate('drawings')
         .select('-password'); // Exclude password field
       //if user not found return null
-      if (!user) return null;
+      if (!user) {
+        return null
+      };
       //return user data
       return user;
     },
-
+   
 
 
     dailyPrompt: async () => {
