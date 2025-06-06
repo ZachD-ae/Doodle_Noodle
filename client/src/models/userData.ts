@@ -7,3 +7,7 @@ export interface UserData extends User {
     submissionDate: string;
     drawings: [Drawing]
 }
+
+export type GetUserDataQuery = {
+    getUserData: UserData
+}

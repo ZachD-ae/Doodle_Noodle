@@ -1,11 +1,9 @@
 import React, { use, useState } from 'react';
-import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import auth from '../utils/auth';
 import SignupForm from '../components/SignupForm';
 import LoginForm from '../components/loginForm';
-import { GET_USER_DATA } from '../utils/queries';
-import { useQuery } from '@apollo/client';
+
 
 
 const LandingPage: React.FC = () => {
@@ -13,26 +11,15 @@ const LandingPage: React.FC = () => {
   const [showSignup, setShowSignup] = useState(false);
   const navigate = useNavigate();
 
+  const checkLoggedIn = async () => {
+    const token = auth.loggedIn() ? auth.getToken() : null;
 
-  const { data } = useQuery(GET_USER_DATA);
-
-  useEffect(() => {
-    if (auth.loggedIn()) {
-      const userData = data?.getUserData || {};
-      console.log(userData)
-      localStorage.setItem('userData', JSON.stringify(userData));
-      if (userData.submissionDate === new Date().toISOString().split('T')[0]) {
-        navigate('/gallery');
-      } else {
-        setShowLogin(false);
-        setShowSignup(false);
-      }
+    if(!token) {
+      return
     } else {
-
+      navigate('/start')
     }
-
-  }, [auth.loggedIn, data, navigate]);
-
+  }
 
   return (
     <div className="flex flex-col items-center justify-center p-6 min-h-screen bg-gray-50">
@@ -50,6 +37,7 @@ const LandingPage: React.FC = () => {
         <button
           className="bg-gray-200 text-black py-2 px-6 rounded-md text-lg hover:bg-black hover:text-white font-shadows hover:scale-110 transition-all duration-300 shadow-lg"
           onClick={() => {
+            checkLoggedIn()
             setShowSignup(true)
             setShowLogin(false);}}
         >

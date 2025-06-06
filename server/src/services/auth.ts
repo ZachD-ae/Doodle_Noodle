@@ -5,12 +5,13 @@ dotenv.config();
 
 
 export const getUserFromToken = (req: any) => {
-  let token = req.body.token || req.query.token || req.headers.authorization;
+  let token = req.headers.authorization;
+  
 
   if (req.headers?.authorization) {
     token = token.split(' ').pop().trim();
   };
-
+  
   //If no token is provided, return the request object as is
   if (!token) {
     return null;
@@ -18,7 +19,7 @@ export const getUserFromToken = (req: any) => {
 
   try {
     const user: any = jwt.verify(token, process.env.JWT_SECRET_KEY || '', { maxAge: '2hr' })
-    return user.data
+    return user
   } catch (err) {
     console.log('Invalid Token');
   }

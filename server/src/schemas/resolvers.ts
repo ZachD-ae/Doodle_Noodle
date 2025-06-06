@@ -31,7 +31,9 @@ export const resolvers = {
         .populate('drawings')
         .select('-password'); // Exclude password field
       //if user not found return null
-      if (!user) return null;
+      if (!user) {
+        return null
+      };
       //return user data
       return user;
     },

@@ -3,23 +3,17 @@ import { gql } from '@apollo/client';
 export const GET_USER_DATA = gql`
     query getUserData {
         getUserData {
-            id
+            _id
             username
             email
             submissionDate
             drawings {
-                id
-                image
-                prompt {
-                    id
-                    text
-                }
+                _id
+                imageURL
                 artist {
-                    id
-                    username
+                    _id
                 }
             }
-
         }
     }
 `;

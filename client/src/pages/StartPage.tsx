@@ -1,18 +1,67 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom'; 
+import { useQuery } from '@apollo/client';
+import { GET_USER_DATA } from '../utils/queries';
+import auth from '../utils/auth';
+
 
 const StartPage = () => {
+
+    const { data, loading, error } = useQuery(GET_USER_DATA);
+    const user = data?.getUserData;
     const navigate = useNavigate();
     
+    const getUser = async () => {
+        console.log(user)
+        const today = new Date().toISOString().split('T')[0]
+        const token = auth.loggedIn() ? auth.getToken() : null;
 
-    const handleStart = () => {
-        // Navigate to the Start Drawing page
-        //add submission date logic
-        //query user 
-        //check if submissiondate is true
+        if (!token) { return false; }
+
+        const submissionDate = user.submissionDate
+        console.log(submissionDate)
+
+        if(today === submissionDate ) {
+            return
+        }
+
+    }
+    useEffect(() => {
+        getUser()
+    }, [])
+
+    const handleStart = async () => {
+        //get user
+        const today = new Date().toISOString().split('T')[0]
+        const token = auth.loggedIn() ? auth.getToken() : null;
         
-        navigate("/canvas");
+
+        if (!token) {return false;}
+
+        try {
+            // userData is already available from the query
+            console.log(user)
+            if (!user) {
+                console.log("No user data returned");
+                return;
+            }
+            if (user.submissionDate === today) {
+                navigate('/gallery');
+            } else {
+                navigate("/canvas");
+            }
+
+        } catch (err) {
+            console.log(err)
+        }
     };
+
+    
+
+    
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+    if (!data || !data.getUserData) return <div>No user data found.</div>;
 
     return (
         

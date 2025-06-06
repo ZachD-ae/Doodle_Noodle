@@ -5,7 +5,8 @@ const typeDefs = gql`
     _id: ID!
     username: String!
     email: String!
-    submissionDate: String!
+    submissionDate: String
+    drawings: [Drawing]!
   }
 
   type AuthPayload {
