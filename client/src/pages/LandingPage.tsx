@@ -48,8 +48,18 @@ const LandingPage: React.FC = () => {
       <h1 className="text-5xl font-bold text-black mb-4 text-center font-shadows">
         Daily Doodle <span className="text-black lg:text-6xl">Challenge</span>
       </h1>
-      {/* ...existing content... */}
-      <div className="flex space-x-4 mb-8">
+
+      <p className="text-3xl text-gray-600 mb-6 py-10 text-center max-w-xl space-y-4 font-roboto italic">
+        You’ve got 30 seconds to bring today’s prompt to life.
+        <strong>No redos.</strong>
+        No pressure.
+        Just draw, submit, and see how the world responded to the same idea.
+      </p>
+
+
+
+
+      <div className="flex space-x-4 mb-8 py-20">
         <button
           className="bg-gray-200 text-black py-2 px-6 rounded-md text-lg hover:bg-black hover:text-white font-shadows hover:scale-110 transition-all duration-300 shadow-lg"
           onClick={() => {
@@ -95,12 +105,6 @@ const LandingPage: React.FC = () => {
       </div>
       )}
 
-      <p className="text-sm text-gray-600 mb-6 text-center">
-        You’ve got 1:30 to bring today’s prompt to life. No redos. No pressure.
-        Just draw, submit, and see how the world responded to the same idea.
-      </p>
-
-      {/* Team Members Section */}
       <div className="mt-8 text-center">
         <p className="mb-4 text-lg text-gray-800 font-roboto font-bold">By:</p>
         <div className="flex justify-center space-x-6">
