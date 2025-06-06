@@ -7,7 +7,7 @@ const GalleryPage: React.FC = () => {
     const [drawings, setDrawings] = useState<string[]>([]); // Store all the drawings
     const [prompt, setPrompt] = useState("An evil scientist bringing its creation to life"); // Drawing prompt
     const navigate = useNavigate();
-    // Fetch the drawings from localStorage
+    
     useEffect(() => {
         if (!auth.loggedIn()) {
             console.log("Please signin first")
@@ -15,9 +15,28 @@ const GalleryPage: React.FC = () => {
         }
         const storedDrawings = JSON.parse(localStorage.getItem('drawings') || '[]');
         setDrawings(storedDrawings);
+        // Fetch the drawings from localStorage
         //get all user drawings
         //make sure to watch for user drawings 
     }, [navigate]);
+
+    const downloadPendingDrawing = () => {
+        const pending = localStorage.getItem('pendingDrawing');
+        if (!pending) {
+            console.warn("No pending drawing found in localStorage.");
+            return;
+        }
+
+        const { image } = JSON.parse(pending);
+
+        // Create a temporary <a> tag to download the image
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = `doodle-noodle-${new Date().toISOString().slice(0, 10)}.png`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
 
     return (
         <div className="flex flex-col items-center justify-center p-6 max-h-screen bg-gray-50">
@@ -51,6 +70,7 @@ const GalleryPage: React.FC = () => {
 
                 {/* Download Button */}
                 <button
+                    onClick={downloadPendingDrawing}
                     className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300"
                 >
                     Download Today's Artwork
