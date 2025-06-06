@@ -36,3 +36,12 @@ export const ADD_DRAWING = gql`
     }
 `;
 
+export const SUBMIT_DRAWING = gql`
+  mutation SubmitDrawing($image: String!) {
+    submitDrawing(image: $image) {
+      _id
+      createdAt
+      imageUrl
+    }
+  }
+`;

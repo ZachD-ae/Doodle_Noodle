@@ -29,7 +29,7 @@ type DailyPrompt {
 
   type Drawing {
     _id: ID!
-    imageURL: String!
+    imageUrl: String!
     prompt: Prompt
     artist: User
     createdAt: String
