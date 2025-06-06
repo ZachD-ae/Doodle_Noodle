@@ -18,46 +18,34 @@ const StartPage = () => {
 
         if (!token) { return false; }
 
-        const submissionDate = user.submissionDate
+        const submissionDate = user?.submissionDate || '';
         console.log(submissionDate)
-
-        if(today === submissionDate ) {
-            return
+        if (today === submissionDate) {
+            navigate('/gallery');
         }
 
+        return user
     }
+    
     useEffect(() => {
         getUser()
-    }, [])
+    }, [user])
 
     const handleStart = async () => {
         //get user
-        const today = new Date().toISOString().split('T')[0]
         const token = auth.loggedIn() ? auth.getToken() : null;
-        
-
         if (!token) {return false;}
-
         try {
-            // userData is already available from the query
-            console.log(user)
             if (!user) {
                 console.log("No user data returned");
-                return;
+                throw new Error('No user Data returned');
             }
-            if (user.submissionDate === today) {
-                navigate('/gallery');
-            } else {
-                navigate("/canvas");
-            }
-
+            navigate("/canvas");
         } catch (err) {
             console.log(err)
         }
     };
-
     
-
     
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;

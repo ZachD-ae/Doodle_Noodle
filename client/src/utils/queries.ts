@@ -17,3 +17,15 @@ export const GET_USER_DATA = gql`
         }
     }
 `;
+
+export const GET_DAILY_PROMPT = gql`
+    query dailyPrompt {
+        dailyPrompt {
+            _id
+            date
+            prompt {
+                text
+            }
+        }
+    }
+`

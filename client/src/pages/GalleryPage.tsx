@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'; // Import the Navbar component
 import auth from '../utils/auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { usePrompt } from '../App';
 
 const GalleryPage: React.FC = () => {
     const [drawings, setDrawings] = useState<string[]>([]); // Store all the drawings
-    const [prompt, setPrompt] = useState("An evil scientist bringing its creation to life"); // Drawing prompt
     const navigate = useNavigate();
+    const location = useLocation()
+    const { prompt } = usePrompt();
     
     useEffect(() => {
         if (!auth.loggedIn()) {

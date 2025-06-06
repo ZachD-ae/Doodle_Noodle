@@ -56,6 +56,7 @@ const LandingPage: React.FC = () => {
         <button
           className="bg-black text-white py-2 px-6 rounded-md text-lg hover:bg-white hover:text-black font-shadows hover:scale-110 transition-all duration-300"
           onClick={() => {
+            checkLoggedIn()
             setShowLogin(true)
             setShowSignup(false);
           }}

@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'; // Import the Navbar component
 import { useNavigate } from 'react-router-dom';
 import auth from '../utils/auth';
+import { usePrompt } from '../App';
 
 const ProfilePage: React.FC = () => {
     const [drawings, setDrawings] = useState<string[]>([]);
     const [streak, setStreak] = useState<number>(0);
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         if (!auth.loggedIn()) {
