@@ -51,7 +51,7 @@ const CanvasPage: React.FC = () => {
                 <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4">
                     Today's Prompt:
                 </h2>
-                <p className="text-center text-gray-500 mb-6">{prompt}</p>
+                <p className="text-3xl text-center text-gray-500 mb-6 font-shadows">{prompt}</p>
 
                 <div className="flex justify-between w-full mb-6">
                     {/* Timer display */}

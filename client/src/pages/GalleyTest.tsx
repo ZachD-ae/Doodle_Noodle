@@ -1,29 +1,25 @@
+// this page is strcitly for testing purposes
+
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'; // Import the Navbar component
-import { useNavigate } from 'react-router-dom';
 import auth from '../utils/auth';
+import { useNavigate } from 'react-router-dom';
 
-const ProfilePage: React.FC = () => {
-    const [drawings, setDrawings] = useState<string[]>([]);
-    const [streak, setStreak] = useState<number>(0);
+const GalleryPage: React.FC = () => {
+    const [drawings, setDrawings] = useState<string[]>([]); // Store all the drawings
+    const [prompt, setPrompt] = useState("An evil scientist bringing its creation to life"); // Drawing prompt
     const navigate = useNavigate();
-
+    
     useEffect(() => {
         if (!auth.loggedIn()) {
+            console.log("Please sign in first");
             navigate('/');
         }
 
+        // Fetch all user drawings from localStorage and update the state
         const storedDrawings = JSON.parse(localStorage.getItem('drawings') || '[]');
-        setDrawings(storedDrawings);
-
-        if (storedDrawings.length > 0) {
-            const lastDrawingDate = new Date(storedDrawings[storedDrawings.length - 1].date);
-            const today = new Date();
-            const diffTime = Math.abs(today.getTime() - lastDrawingDate.getTime());
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            setStreak(diffDays === 1 ? streak + 1 : 0);
-        }
-    }, []);
+        setDrawings(storedDrawings); // Update the drawings state
+    }, [navigate]);
 
     const downloadPendingDrawing = () => {
         const pending = localStorage.getItem('pendingDrawing');
@@ -33,30 +29,28 @@ const ProfilePage: React.FC = () => {
         }
 
         const { image } = JSON.parse(pending);
+
+        // Create a temporary <a> tag to download the image
         const link = document.createElement('a');
         link.href = image;
         link.download = `doodle-noodle-${new Date().toISOString().slice(0, 10)}.png`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        // Remove the pending drawing after download
+        localStorage.removeItem('pendingDrawing');
     };
 
     return (
         <div className="flex flex-col items-center justify-center p-6 max-h-screen bg-gray-50">
-            <Navbar /> {/* Add the Navbar component here */}
+            <Navbar /> 
 
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl mt-6">
-                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4">
-                    My Profile:
+                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4 font-roboto italic">
+                    Today's Prompt:
                 </h2>
-
-                {/* Streak and Artwork Count */}
-                <p className="text-center text-gray-500 mb-4">
-                    You have {drawings.length} artworks! Keep it up!
-                </p>
-                <p className="text-center text-gray-500 mb-6">
-                    Your daily streak is {streak} day(s)!
-                </p>
+                <p className="text-3xl text-center text-gray-500 mb-6 font-shadows">{prompt}</p>
 
                 {/* Gallery Grid */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
@@ -78,10 +72,10 @@ const ProfilePage: React.FC = () => {
                     )}
                 </div>
 
-               
+                {/* Download Button */}
                 <button
                     onClick={downloadPendingDrawing}
-                    className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300 font-shadow"
+                    className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300 font-shadows"
                 >
                     Download Today's Artwork
                 </button>
@@ -90,4 +84,4 @@ const ProfilePage: React.FC = () => {
     );
 };
 
-export default ProfilePage;
+export default GalleryPage;
