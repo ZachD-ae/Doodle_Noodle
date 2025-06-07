@@ -1,5 +1,5 @@
 import User from './user.js';
-import Prompt from './prompt.js';
+import DailyPrompt from './dailyPrompt.js';
 import Drawing from './drawing.js';
 
-export { User, Prompt, Drawing };
+export { User, DailyPrompt, Drawing };

@@ -1,7 +1,7 @@
 import { Drawing } from "./drawing";
-import { User } from "./user";
 
-export interface UserData extends User {
+
+export interface UserData {
     username:string;
     email:string;
     submissionDate: string;

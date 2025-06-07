@@ -1,26 +1,47 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { ReactSketchCanvas } from 'react-sketch-canvas';
 import { gql, useMutation } from '@apollo/client';
+import { useUser } from '../../App';
+import { SubmitDrawingResult } from '../../models/submitDrawing';
 
 // Define the mutation
 const SUBMIT_DRAWING = gql`
   mutation SubmitDrawing($image: String!) {
     submitDrawing(image: $image) {
       _id
-      submissionDate
+      imageUrl
+      createdAt
+      prompt {
+        date
+        prompt {
+          text
+        }
+        drawings {
+          _id
+        }
+      }
+      artist {
+        _id
+        username
+        email
+        submissionDate
+        drawings {
+          _id
+        }
+      }
     }
   }
 `;
 
 const Canvas: React.FC = () => {
+  const { setUser } = useUser()
   const canvasRef = useRef<any>(null);
-  const [submitDrawingMutation] = useMutation(SUBMIT_DRAWING);
+  const [submitDrawingMutation] = useMutation<SubmitDrawingResult>(SUBMIT_DRAWING);
   const [timeLeft, setTimeLeft] = useState(15);
 
   useEffect(() => {
     if (timeLeft <= 0) {
       submitDrawing(); 
-      return;
     }
 
     const timer = setTimeout(() => {
@@ -41,11 +62,18 @@ const Canvas: React.FC = () => {
         console.log("Image to submit:", image);
 
         try {
-        await submitDrawingMutation({ variables: { image } });
-
-        const today = new Date().toISOString().slice(0, 10);
+          const { data } = await submitDrawingMutation({ variables: { image } });
+  
+          if (data && data.submitDrawing && data.submitDrawing.artist) {
+            //sets User with new drawing attached
+            setUser(data.submitDrawing.artist)
+            localStorage.setItem('drawing', data.submitDrawing.imageUrl)
+            console.log("successfully set user",setUser)
+          }
+        
+        const today = new Date().toISOString().split('T')[0];
         localStorage.setItem('lastSubmittedDate', today);
-
+        
         console.log('Drawing submitted and submission date stored in localStorage');
     } catch (err) {
         console.error("GRAPHQL ERROR:", err);

@@ -1,7 +1,10 @@
 import { IUser } from '../models/user.js';
+
 import User from '../models/user.js';
 import Drawing from '../models/drawing.js';
 import { getDailyPrompt } from '../services/dailyPrompt.js';
+
+
 import jwt from 'jsonwebtoken';
 import DailyPrompt from '../models/dailyPrompt.js';
 
@@ -144,6 +147,7 @@ export const resolvers = {
 
       const today = new Date().toISOString().split('T')[0];
       const prompt = await DailyPrompt.findOne({ date: today });
+      console.log(prompt)
       if (!prompt) throw new Error('No active prompt today');
 
       // Check if user already submitted for this prompt
@@ -157,13 +161,17 @@ export const resolvers = {
       }
       //Add drawing to drawing documents
       const newDrawing = await Drawing.create({
-        image: args.image,
+        imageUrl: args.image,
         artist: context.user.id,
         prompt: prompt._id,
       });
+      console.log("user", context.user)
+      console.log("id", context.user.id)
+      console.log(newDrawing)
+      
       //add drawingId to user drawings and update submission date to todays date
       const updateUser = await User.findOneAndUpdate(
-        { _id: context.user._id },
+        { _id: context.user.id },
         { 
           $addToSet: { drawings: newDrawing._id },
           submissionDate: new Date().toISOString().split('T')[0] // YYYY-MM-DD
@@ -171,7 +179,26 @@ export const resolvers = {
         { new: true, runValidators: true }
       );
 
-      return updateUser;
+      await DailyPrompt.findByIdAndUpdate(
+        prompt._id,
+        {
+          $addToSet: { drawings: newDrawing._id}
+        },
+        { new:true, runValidators: true }
+      );
+
+      const populateedDrawing = await Drawing.findById(newDrawing._id)
+        .populate({
+          path: 'artist',
+          populate: { path: 'drawings'}
+        })
+        .populate({
+          path: 'prompt',
+          populate: { path: 'prompt'}
+        })
+      console.log(populateedDrawing)
+      console.log(updateUser)
+      return populateedDrawing;
     }
   }
 };
