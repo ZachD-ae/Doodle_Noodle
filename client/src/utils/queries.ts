@@ -26,6 +26,14 @@ export const GET_DAILY_PROMPT = gql`
             prompt {
                 text
             }
+            drawings {
+                _id
+                imageUrl
+                artist {
+                    _id
+                    username
+                }
+            }
         }
     }
 `

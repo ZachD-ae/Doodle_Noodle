@@ -46,7 +46,11 @@ export const resolvers = {
     dailyPrompt: async () => {
       const today = new Date().toISOString().split('T')[0];
       const prompt = await DailyPrompt.findOne({date: today})
-      .populate('prompt');
+      .populate('prompt')
+      .populate({
+        path: 'drawings',
+        populate: {path: 'artist', select: '_id username'}
+      });
       if(!prompt) {
         getDailyPrompt();
         console.log("Error no daily prompt found")

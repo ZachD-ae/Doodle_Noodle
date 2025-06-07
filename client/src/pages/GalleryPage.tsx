@@ -3,24 +3,40 @@ import Navbar from '../components/Navbar'; // Import the Navbar component
 import auth from '../utils/auth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrompt, useUser } from '../App';
+import { GET_DAILY_PROMPT } from '../utils/queries';
+import { useQuery } from '@apollo/client';
 
 const GalleryPage: React.FC = () => {
-    const [userDrawing, setUserDrawings] = useState<string>(); // Store all the drawings
-    // const {drawings, loading, error } = useQuery(GET_DAILY_DRAWINGS)
+    const [userDrawing, setUserDrawing] = useState<string>(); // Store all the drawings
+    const {data, loading, error } = useQuery(GET_DAILY_PROMPT)
     const navigate = useNavigate();
     const location = useLocation()
     const { prompt } = usePrompt();
     const { user } = useUser();
-    
-    
-    
+    const drawings = data?.dailyPrompt?.drawings
+    console.log("success",drawings[0].imageUrl)
+    console.log(user)
+
     useEffect(() => {
         if (!auth.loggedIn()) {
             console.log("Please signin first")
             navigate('/');
         }
         const storedUserDrawing = JSON.parse(localStorage.getItem('drawing') || '[]');
-        setUserDrawings(storedUserDrawing);
+        setUserDrawing(storedUserDrawing);
+
+        if (drawings && user) {
+            const userId = user?._id;
+            const found = drawings.find(drawing => {
+                if (!drawing.artist) return false;
+                if (typeof drawing.artist === 'object') {
+                    return drawing.artist._id === userId;
+                }
+                return drawing.artist === userId;
+            });
+            setUserDrawing(found ? found.imageUrl : null);
+        }
+        
         // Fetch the drawings from localStorage
         //get all user drawings
         //make sure to watch for user drawings 
@@ -43,6 +59,10 @@ const GalleryPage: React.FC = () => {
         link.click();
         document.body.removeChild(link);
     };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+    if (!data || !data.dailyPrompt) return <div>No user data found.</div>;
 
     return (
         <div className="flex flex-col items-center justify-center p-6 max-h-screen bg-gray-50">
@@ -75,7 +95,7 @@ const GalleryPage: React.FC = () => {
                                 className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"
                             >
                                 <img
-                                    src={drawing}
+                                    src={drawing.imageUrl}
                                     alt={`Drawing ${index + 1}`}
                                     className="w-full h-full object-contain"
                                 />
