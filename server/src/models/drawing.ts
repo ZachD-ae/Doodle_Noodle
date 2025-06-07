@@ -22,7 +22,7 @@ const drawingSchema = new Schema<IDrawing>({
   },
   prompt: {
     type: Schema.Types.ObjectId,
-    ref: 'Prompt',
+    ref: 'DailyPrompt',
     required: true,
   },
 }, { timestamps: true });

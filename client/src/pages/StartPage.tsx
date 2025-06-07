@@ -3,10 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { GET_USER_DATA } from '../utils/queries';
 import auth from '../utils/auth';
+import { useUser } from '../App';
 
 
 const StartPage = () => {
-
+    const { setUser } = useUser()
     const { data, loading, error } = useQuery(GET_USER_DATA);
     const user = data?.getUserData;
     const navigate = useNavigate();
@@ -24,7 +25,8 @@ const StartPage = () => {
             navigate('/gallery');
         }
 
-        return user
+        setUser(user)
+        console.log(user)
     }
     
     useEffect(() => {

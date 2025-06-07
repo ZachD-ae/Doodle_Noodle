@@ -2,21 +2,25 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'; // Import the Navbar component
 import auth from '../utils/auth';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { usePrompt } from '../App';
+import { usePrompt, useUser } from '../App';
 
 const GalleryPage: React.FC = () => {
-    const [drawings, setDrawings] = useState<string[]>([]); // Store all the drawings
+    const [userDrawing, setUserDrawings] = useState<string>(); // Store all the drawings
+    // const {drawings, loading, error } = useQuery(GET_DAILY_DRAWINGS)
     const navigate = useNavigate();
     const location = useLocation()
     const { prompt } = usePrompt();
+    const { user } = useUser();
+    
+    
     
     useEffect(() => {
         if (!auth.loggedIn()) {
             console.log("Please signin first")
             navigate('/');
         }
-        const storedDrawings = JSON.parse(localStorage.getItem('drawings') || '[]');
-        setDrawings(storedDrawings);
+        const storedUserDrawing = JSON.parse(localStorage.getItem('drawing') || '[]');
+        setUserDrawings(storedUserDrawing);
         // Fetch the drawings from localStorage
         //get all user drawings
         //make sure to watch for user drawings 
@@ -52,9 +56,19 @@ const GalleryPage: React.FC = () => {
 
                 {/* Gallery Grid */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
-                    {drawings.length === 0 ? (
-                        <p className="text-center text-gray-500">No drawings available yet.</p>
-                    ) : (
+                    {/* Render user drawing first if it exists */}
+                    {userDrawing && (
+                        <div className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center">
+                            <img
+                                src={userDrawing}
+                                alt="Your Drawing"
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
+                    )}
+
+                    {/* Render all other drawings */}
+                    {drawings && drawings.length > 0 ? (
                         drawings.map((drawing, index) => (
                             <div
                                 key={index}
@@ -67,6 +81,8 @@ const GalleryPage: React.FC = () => {
                                 />
                             </div>
                         ))
+                    ) : (
+                        <p className="text-center text-gray-500 col-span-3">No drawings available yet.</p>
                     )}
                 </div>
 

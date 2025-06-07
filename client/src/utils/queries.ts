@@ -9,7 +9,7 @@ export const GET_USER_DATA = gql`
             submissionDate
             drawings {
                 _id
-                imageURL
+                imageUrl
                 artist {
                     _id
                 }

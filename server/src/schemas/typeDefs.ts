@@ -6,7 +6,7 @@ const typeDefs = gql`
     username: String!
     email: String!
     submissionDate: String
-    drawings: [Drawing]!
+    drawings: [Drawing]
   }
 
   type AuthPayload {
@@ -17,7 +17,6 @@ const typeDefs = gql`
   type Prompt {
     _id: ID!
     text: String!
-    drawings: [Drawing]
     createdAt: String
   }
 
@@ -25,15 +24,15 @@ type DailyPrompt {
   _id: ID!
   date: String!
   prompt: Prompt!
+  drawings: [Drawing]
 }
 
   type Drawing {
     _id: ID!
     imageUrl: String!
-    prompt: Prompt
+    prompt: DailyPrompt!
     artist: User
     createdAt: String
-    isOwner: Boolean
   }
     
   type Query {
