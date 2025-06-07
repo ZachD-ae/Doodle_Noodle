@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import auth from '../utils/auth';
 
 const CanvasPage: React.FC = () => {
-    const [timer, setTimer] = useState(150); 
+    const [timer, setTimer] = useState(15); 
     const [prompt, setPrompt] = useState("An evil scientist bringing its creation to life"); 
     const navigate = useNavigate(); 
     

@@ -1,45 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar'; // Import the Navbar component
-import auth from '../utils/auth';
-import { useNavigate } from 'react-router-dom';
+import Navbar from '../components/Navbar';
 
 const GalleryPage: React.FC = () => {
-    const [drawings, setDrawings] = useState<string[]>([]); // Store all the drawings
-    const [prompt, setPrompt] = useState("An evil scientist bringing its creation to life"); // Drawing prompt
-    const navigate = useNavigate();
-    
-    useEffect(() => {
-        if (!auth.loggedIn()) {
-            console.log("Please signin first")
-            navigate('/');
-        }
-        const storedDrawings = JSON.parse(localStorage.getItem('drawings') || '[]');
-        setDrawings(storedDrawings);
-        // Fetch the drawings from localStorage
-        //get all user drawings
-        //make sure to watch for user drawings 
-    }, [navigate]);
+  const [savedDrawing, setSavedDrawing] = useState<string | null>(null);
+  const [prompt, setPrompt] = useState("An evil scientist bringing its creation to life"); // Drawing prompt
 
-    const downloadPendingDrawing = () => {
-        const pending = localStorage.getItem('pendingDrawing');
-        if (!pending) {
-            console.warn("No pending drawing found in localStorage.");
-            return;
-        }
+  useEffect(() => {
+    // Retrieve the saved drawing from localStorage
+    const drawing = localStorage.getItem('drawing');
+    if (drawing) {
+      setSavedDrawing(drawing); // Set the saved drawing to state
+    }
+  }, []);
 
-        const { image } = JSON.parse(pending);
+  return (
 
-        // Create a temporary <a> tag to download the image
-        const link = document.createElement('a');
-        link.href = image;
-        link.download = `doodle-noodle-${new Date().toISOString().slice(0, 10)}.png`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
-    return (
-        <div className="flex flex-col items-center justify-center p-6 max-h-screen bg-gray-50">
+              <div className="flex flex-col items-center justify-center p-6 max-h-screen bg-gray-50">
             <Navbar /> 
 
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl mt-6">
@@ -50,34 +26,26 @@ const GalleryPage: React.FC = () => {
 
                 {/* Gallery Grid */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
-                    {drawings.length === 0 ? (
+                    {!savedDrawing ? (
                         <p className="text-center text-gray-500">No drawings available yet.</p>
                     ) : (
-                        drawings.map((drawing, index) => (
-                            <div
-                                key={index}
-                                className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"
-                            >
-                                <img
-                                    src={drawing}
-                                    alt={`Drawing ${index + 1}`}
-                                    className="w-full h-full object-contain"
-                                />
-                            </div>
-                        ))
+                        <div
+                            className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"
+                        >
+                            <img
+                                src={savedDrawing}
+                                alt="Saved Drawing"
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
                     )}
                 </div>
 
                 {/* Download Button */}
-                <button
-                    onClick={downloadPendingDrawing}
-                    className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300 font-shadows"
-                >
-                    Download Today's Artwork
-                </button>
+           
             </div>
         </div>
-    );
+  );
 };
 
 export default GalleryPage;
