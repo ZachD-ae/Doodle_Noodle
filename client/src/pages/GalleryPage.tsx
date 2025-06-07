@@ -1,9 +1,27 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar';
+import Navbar from '../components/Navbar'; // Import the Navbar component
+import auth from '../utils/auth';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { usePrompt } from '../App';
 
 const GalleryPage: React.FC = () => {
-  const [savedDrawing, setSavedDrawing] = useState<string | null>(null);
-  const [prompt, setPrompt] = useState("An evil scientist bringing its creation to life"); // Drawing prompt
+    const [drawings, setDrawings] = useState<string[]>([]); // Store all the drawings
+    const [savedDrawing, setSavedDrawing] = useState<string | null>(null); // Store the saved drawing
+    const navigate = useNavigate();
+    const location = useLocation()
+    const { prompt } = usePrompt();
+    
+    useEffect(() => {
+        if (!auth.loggedIn()) {
+            console.log("Please signin first")
+            navigate('/');
+        }
+        const storedDrawings = JSON.parse(localStorage.getItem('drawings') || '[]');
+        setDrawings(storedDrawings);
+        // Fetch the drawings from localStorage
+        //get all user drawings
+        //make sure to watch for user drawings 
+    }, [navigate]);
 
   useEffect(() => {
     // Retrieve the saved drawing from localStorage
@@ -26,20 +44,23 @@ const GalleryPage: React.FC = () => {
 
                 {/* Gallery Grid */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
-                    {!savedDrawing ? (
-                        <p className="text-center text-gray-500">No drawings available yet.</p>
-                    ) : (
-                        <div
-                            className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"
-                        >
-                            <img
-                                src={savedDrawing}
-                                alt="Saved Drawing"
-                                className="w-full h-full object-contain"
-                            />
-                        </div>
-                    )}
-                </div>
+  {drawings.length === 0 ? (
+    <p className="text-center text-gray-500 col-span-3">No drawings available yet.</p>
+  ) : (
+    drawings.map((drawing, idx) => (
+      <div
+        key={idx}
+        className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"
+      >
+        <img
+          src={drawing}
+          alt={`Drawing ${idx + 1}`}
+          className="w-full h-full object-contain"
+        />
+      </div>
+    ))
+  )}
+</div>
 
                 {/* Download Button */}
            

@@ -25,14 +25,20 @@ const CanvasPage: React.FC = () => {
     canvasRef.current?.clear();
   };
 
-  const submitDrawing = async () => {
-    const image = await canvasRef.current?.exportImage("base64"); // Export image as Base64
-    if (!image) return;
+ const submitDrawing = async () => {
+  const image = await canvasRef.current?.exportImage("base64");
+  if (!image) return;
 
-    // Save the drawing to localStorage (for testing purposes)
-    localStorage.setItem('drawing', image);
-    console.log("Drawing saved:", image);
-  };
+  // Get existing drawings or start a new array
+  const drawings = JSON.parse(localStorage.getItem('drawings') || '[]');
+  drawings.push(image);
+  localStorage.setItem('drawings', JSON.stringify(drawings));
+
+  // Optionally, still save the latest drawing separately
+  localStorage.setItem('drawing', image);
+
+  console.log("Drawing saved:", image);
+};
 
   return (
     <div className="canvas-container justify-center items-center">

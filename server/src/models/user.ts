@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema<IUser>({
   username: { type: String, required: true, unique: true },
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true },
-  submissionDate: { type: String, default: null },
+  submissionDate: { type: String },
   drawings: [{type: Schema.Types.ObjectId, ref: 'Drawing'}],
   createdAt: { type: Date, default: Date.now }
 });

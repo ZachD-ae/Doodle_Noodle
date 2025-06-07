@@ -81,7 +81,7 @@ const ProfilePage: React.FC = () => {
                
                 <button
                     onClick={downloadPendingDrawing}
-                    className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300 font-shadows"
+                    className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300 font-shadow"
                 >
                     Download Today's Artwork
                 </button>

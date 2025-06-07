@@ -35,7 +35,6 @@ const SignupForm = ({ handleModalClose, onSignUpSuccess }: {handleModalClose: ()
         }
         
         try {
-            console.log(userFormData.username)
             const  { data }  = await addUser({
                 variables: {
                     username: userFormData.username,
@@ -44,8 +43,8 @@ const SignupForm = ({ handleModalClose, onSignUpSuccess }: {handleModalClose: ()
                     confirmPassword: userFormData.confirmPassword
                 },
             });
-            console.log({data})
-            Auth.login(data.token);
+            
+            await Auth.login(data.token);
         } catch (err) {
             console.error(err);
             setShowAlert(true);
