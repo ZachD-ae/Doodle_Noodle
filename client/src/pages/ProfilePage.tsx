@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'; // Import the Navbar component
 import { useNavigate } from 'react-router-dom';
 import auth from '../utils/auth';
+import { usePrompt } from '../App';
 
 const ProfilePage: React.FC = () => {
     const [drawings, setDrawings] = useState<string[]>([]);
     const [streak, setStreak] = useState<number>(0);
     const navigate = useNavigate();
+    
 
     useEffect(() => {
         if (!auth.loggedIn()) {
@@ -81,7 +83,7 @@ const ProfilePage: React.FC = () => {
                
                 <button
                     onClick={downloadPendingDrawing}
-                    className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300 font-shadow"
+                    className="py-2 px-6 bg-teal-500 text-white font-semibold rounded-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 >
                     Download Today's Artwork
                 </button>
