@@ -44,23 +44,20 @@ const GalleryPage: React.FC = () => {
 
                 {/* Gallery Grid */}
                 <div className="grid grid-cols-3 gap-4 mb-6">
-  {drawings.length === 0 ? (
-    <p className="text-center text-gray-500 col-span-3">No drawings available yet.</p>
-  ) : (
-    drawings.map((drawing, idx) => (
-      <div
-        key={idx}
-        className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"
-      >
-        <img
-          src={drawing}
-          alt={`Drawing ${idx + 1}`}
-          className="w-full h-full object-contain"
-        />
-      </div>
-    ))
-  )}
-</div>
+                    {!savedDrawing ? (
+                        <p className="text-center text-gray-500">No drawings available yet.</p>
+                    ) : (
+                        <div
+                            className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"
+                        >
+                            <img
+                                src={savedDrawing}
+                                alt="Saved Drawing"
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
+                    )}
+                </div>
 
                 {/* Download Button */}
            
