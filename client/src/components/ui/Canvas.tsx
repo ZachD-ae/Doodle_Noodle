@@ -115,4 +115,4 @@ const Canvas: React.FC = () => {
 
 export default Canvas;
 
-export default Canvas;
+
