@@ -8,7 +8,7 @@ import { GET_DAILY_PROMPT } from '../utils/queries';
 import { usePrompt } from '../App';
 
 const CanvasPage: React.FC = () => {
-    const [timer, setTimer] = useState(15); 
+    const [timer, setTimer] = useState(30); 
     const navigate = useNavigate(); 
     
     const { data, loading, error } = useQuery(GET_DAILY_PROMPT)
