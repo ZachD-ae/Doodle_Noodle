@@ -113,7 +113,7 @@ const GalleryPage: React.FC = () => {
                             >
                                 <img
                                     src={drawing.imageUrl}
-                                    alt={`Drawing ${index + 1}`}
+                                    alt={`Drawing by ${drawing.artist?.username || 'Anonymous'}`}
                                     className="w-full h-full object-contain"
                                 />
                             </div>
