@@ -4,56 +4,72 @@ import auth from '../utils/auth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrompt, useUser } from '../App';
 import { GET_DAILY_PROMPT } from '../utils/queries';
+import { GET_USER_DATA } from '../utils/queries';
 import { useQuery } from '@apollo/client';
+import { UserData } from '../models/userData';
 
 const GalleryPage: React.FC = () => {
-    const [userDrawing, setUserDrawing] = useState<string>(); // Store all the drawings
+    const [userDrawing, setUserDrawing] = useState<string>(); // Store User drawings
+    const [allDrawings, setAllDrawings] = useState([]); // Store User drawings
     const {data, loading, error } = useQuery(GET_DAILY_PROMPT)
     const navigate = useNavigate();
-    const location = useLocation()
     const { prompt } = usePrompt();
     const { user } = useUser();
     const drawings = data?.dailyPrompt?.drawings
-    console.log("success",drawings[0].imageUrl)
-    console.log(user)
+    
 
     useEffect(() => {
         if (!auth.loggedIn()) {
             console.log("Please signin first")
             navigate('/');
         }
-        const storedUserDrawing = JSON.parse(localStorage.getItem('drawing') || '[]');
-        setUserDrawing(storedUserDrawing);
+        
 
         if (drawings && user) {
             const userId = user?._id;
             const found = drawings.find(drawing => {
                 if (!drawing.artist) return false;
                 if (typeof drawing.artist === 'object') {
-                    return drawing.artist._id === userId;
+                    const userDrawing = drawing.artist._id === userId;
+                    return userDrawing
                 }
-                return drawing.artist === userId;
+                
             });
+            
             setUserDrawing(found ? found.imageUrl : null);
+        }
+        
+        if (drawings && user) {
+            const userId = user?._id;
+            
+            
+            const filter = drawings.filter(drawing => {
+                if (!drawing.artist) return true; // keep drawings with no artist just in case
+                if (typeof drawing.artist === 'object') {
+                    return drawing.artist._id !== userId;
+                }
+            });
+            
+            
+            setAllDrawings(filter);
         }
         
         // Fetch the drawings from localStorage
         //get all user drawings
         //make sure to watch for user drawings 
-    }, [navigate]);
+    }, [data, navigate]);
 
     const downloadPendingDrawing = () => {
-        const pending = localStorage.getItem('pendingDrawing');
-        if (!pending) {
+        const drawing = localStorage.getItem('drawing');
+        if (!drawing) {
             console.warn("No pending drawing found in localStorage.");
             return;
         }
 
-        const { image } = JSON.parse(pending);
 
         // Create a temporary <a> tag to download the image
         const link = document.createElement('a');
-        link.href = image;
+        link.href = drawing;
         link.download = `doodle-noodle-${new Date().toISOString().slice(0, 10)}.png`;
         document.body.appendChild(link);
         link.click();
@@ -88,8 +104,8 @@ const GalleryPage: React.FC = () => {
                     )}
 
                     {/* Render all other drawings */}
-                    {drawings && drawings.length > 0 ? (
-                        drawings.map((drawing, index) => (
+                    {allDrawings && allDrawings.length > 0 ? (
+                        allDrawings.map((drawing, index) => (
                             <div
                                 key={index}
                                 className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"

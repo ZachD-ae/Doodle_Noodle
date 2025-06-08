@@ -123,6 +123,7 @@ export const resolvers = {
       await newUser.save();
 
       const token = signToken(newUser);
+      
 
       return { token, user: newUser };
     },
@@ -151,7 +152,7 @@ export const resolvers = {
 
       const today = new Date().toISOString().split('T')[0];
       const prompt = await DailyPrompt.findOne({ date: today });
-      console.log(prompt)
+      
       if (!prompt) throw new Error('No active prompt today');
 
       // Check if user already submitted for this prompt
@@ -169,9 +170,7 @@ export const resolvers = {
         artist: context.user.id,
         prompt: prompt._id,
       });
-      console.log("user", context.user)
-      console.log("id", context.user.id)
-      console.log(newDrawing)
+      
       
       //add drawingId to user drawings and update submission date to todays date
       const updateUser = await User.findOneAndUpdate(
@@ -200,8 +199,7 @@ export const resolvers = {
           path: 'prompt',
           populate: { path: 'prompt'}
         })
-      console.log(populateedDrawing)
-      console.log(updateUser)
+      
       return populateedDrawing;
     }
   }

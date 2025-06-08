@@ -35,7 +35,8 @@ const startApolloServer = async () => {
           }),
     }));
 
-    app.use(express.static(path.join(__dirname, '..', '..', 'client', 'dist')));
+    const clientDistPath = path.resolve(__dirname, '..', '..', 'client', 'dist');
+    app.use(express.static(clientDistPath));
 
     app.get('*', (_req, res) => {
         res.sendFile(path.join(__dirname, '..', '..', 'client', 'dist', 'index.html'));

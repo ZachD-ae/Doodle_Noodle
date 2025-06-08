@@ -77,7 +77,7 @@ const LandingPage: React.FC = () => {
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <SignupForm handleModalClose={() => setShowSignup(false)}
             onSignUpSuccess={() => {
-              navigate('/start')}} />
+              navigate('/')}} />
         </div>
       )}
 

@@ -29,12 +29,12 @@ const LoginForm = ({ handleModalClose, onLoginSuccess }: { handleModalClose: () 
             event.preventDefault();
             event.stopPropagation();
         }
-        console.log(userFormData.email, userFormData.password)
+        
         try {
             const { data } = await loginUser({
                 variables: { email: userFormData.email, password: userFormData.password }
             });
-            console.log(data)
+            
             Auth.login(data.login.token);
             handleModalClose()
             if (onLoginSuccess) {
