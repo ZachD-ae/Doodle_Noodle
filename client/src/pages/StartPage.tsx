@@ -13,20 +13,20 @@ const StartPage = () => {
     const navigate = useNavigate();
     
     const getUser = async () => {
-        console.log(user)
+        
         const today = new Date().toISOString().split('T')[0]
         const token = auth.loggedIn() ? auth.getToken() : null;
 
         if (!token) { return false; }
 
         const submissionDate = user?.submissionDate || '';
-        console.log(submissionDate)
+        
         if (today === submissionDate) {
             navigate('/gallery');
         }
 
         setUser(user)
-        console.log(user)
+        
     }
     
     useEffect(() => {
