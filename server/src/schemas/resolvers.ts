@@ -173,7 +173,7 @@ export const resolvers = {
       
       
       //add drawingId to user drawings and update submission date to todays date
-      const updateUser = await User.findOneAndUpdate(
+      await User.findOneAndUpdate(
         { _id: context.user.id },
         { 
           $addToSet: { drawings: newDrawing._id },
