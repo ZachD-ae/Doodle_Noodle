@@ -61,7 +61,7 @@ const ProfilePage: React.FC = () => {
                         drawings.map((drawing, index) => (
                             <div
                                 key={index}
-                                className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"
+                                className="w-full h-48 bg-gray-100 rounded-md flex flex-col justify-center items-center p-2"
                             >
                                 <img
                                     src={drawing.imageUrl}
