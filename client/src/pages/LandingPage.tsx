@@ -81,10 +81,7 @@ const LandingPage: React.FC = () => {
         </div>
       )}
 
-      <p className="text-sm text-gray-600 mb-6 text-center">
-        You’ve got 1:30 to bring today’s prompt to life. No redos. No pressure.
-        Just draw, submit, and see how the world responded to the same idea.
-      </p>
+      
 
       {/* Team Members Section */}
       <div className="mt-8 text-center">
@@ -116,3 +113,4 @@ const LandingPage: React.FC = () => {
 
 
 export default LandingPage;
+
