@@ -94,12 +94,13 @@ const GalleryPage: React.FC = () => {
                 <div className="grid grid-cols-3 gap-4 mb-6">
                     {/* Render user drawing first if it exists */}
                     {userDrawing && (
-                        <div className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center">
+                        <div className="w-full h-48 bg-gray-100 rounded-md flex flex-col justify-center items-center p-2">
                             <img
                                 src={userDrawing}
                                 alt="Your Drawing"
                                 className="w-full h-full object-contain"
                             />
+                              <p className="text-sm text-gray-600 mt-1">Your Drawing</p>
                         </div>
                     )}
 
@@ -108,7 +109,7 @@ const GalleryPage: React.FC = () => {
                         allDrawings.map((drawing, index) => (
                             <div
                                 key={index}
-                                className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"
+                                className="w-full h-48 bg-gray-100 rounded-md flex flex-col justify-center items-center p-2"
                             >
                                 <img
                                     src={drawing.imageUrl}
@@ -125,7 +126,7 @@ const GalleryPage: React.FC = () => {
                 {/* Download Button */}
                 <button
                     onClick={downloadPendingDrawing}
-                    className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300"
+                    className="py-2 px-6 bg-black text-white font-semibold rounded-md hover:bg-white hover:text-black shadow-md transition-colors duration-300 font-shadows"
                 >
                     Download Today's Artwork
                 </button>
@@ -135,3 +136,4 @@ const GalleryPage: React.FC = () => {
 };
 
 export default GalleryPage;
+
