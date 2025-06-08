@@ -1,38 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'; // Import the Navbar component
+import { useNavigate } from 'react-router-dom';
+import auth from '../utils/auth';
+import { usePrompt } from '../App';
 
 const ProfilePage: React.FC = () => {
-    const [drawings, setDrawings] = useState<string[]>([]); // Store the user's drawings
-    const [streak, setStreak] = useState<number>(0); // Store the user's streak
-    const [prompt, setPrompt] = useState("An evil scientist bringing its creation to life"); // Drawing prompt
+    const [drawings, setDrawings] = useState<string[]>([]);
+    const [streak, setStreak] = useState<number>(0);
+    const navigate = useNavigate();
+    
 
-    // Fetch the saved drawings from localStorage
     useEffect(() => {
+        if (!auth.loggedIn()) {
+            navigate('/');
+        }
+
         const storedDrawings = JSON.parse(localStorage.getItem('drawings') || '[]');
         setDrawings(storedDrawings);
 
-        // Calculate the streak based on how many consecutive drawings there are
         if (storedDrawings.length > 0) {
             const lastDrawingDate = new Date(storedDrawings[storedDrawings.length - 1].date);
             const today = new Date();
             const diffTime = Math.abs(today.getTime() - lastDrawingDate.getTime());
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); // Difference in days
-
-            setStreak(diffDays === 1 ? streak + 1 : 0); // Increment streak if drawn the next day
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            setStreak(diffDays === 1 ? streak + 1 : 0);
         }
     }, []);
 
-    // Handle the download of the current drawing (if applicable)
-    const handleDownload = () => {
-        const latestDrawing = drawings[drawings.length - 1];
+    const downloadPendingDrawing = () => {
+        const pending = localStorage.getItem('pendingDrawing');
+        if (!pending) {
+            console.warn("No pending drawing found in localStorage.");
+            return;
+        }
+
+        const { image } = JSON.parse(pending);
         const link = document.createElement('a');
-        link.href = latestDrawing;
-        link.download = 'todays_artwork.png'; // You can customize the file name
+        link.href = image;
+        link.download = `doodle-noodle-${new Date().toISOString().slice(0, 10)}.png`;
+        document.body.appendChild(link);
         link.click();
+        document.body.removeChild(link);
     };
 
     return (
-        <div className="flex flex-col items-center justify-center p-6 min-h-screen bg-gray-50">
+        <div className="flex flex-col items-center justify-center p-6 max-h-screen bg-gray-50">
             <Navbar /> {/* Add the Navbar component here */}
 
             <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-3xl mt-6">
@@ -70,7 +82,7 @@ const ProfilePage: React.FC = () => {
 
                
                 <button
-                    onClick={handleDownload}
+                    onClick={downloadPendingDrawing}
                     className="py-2 px-6 bg-teal-500 text-white font-semibold rounded-md hover:bg-teal-600 focus:outline-none focus:ring-2 focus:ring-teal-500"
                 >
                     Download Today's Artwork

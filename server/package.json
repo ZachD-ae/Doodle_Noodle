@@ -20,7 +20,8 @@
         "express": "^4.21.2",
         "graphql": "^16.11.0",
         "jsonwebtoken": "^9.0.2",
-        "mongoose": "^8.15.1"
+        "mongoose": "^8.15.1",
+        "node-cron": "^4.1.0"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.2",

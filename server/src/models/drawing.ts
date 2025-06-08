@@ -1,6 +1,16 @@
-import { Schema, model } from 'mongoose';
+import { Schema, model, type Document } from 'mongoose';
 
-const drawingSchema = new Schema({
+import type {IUser} from './user';
+import type {IPrompt} from './prompt';
+
+export interface IDrawing extends Document{
+  imageUrl: string,
+  artist: IUser,
+  prompt: IPrompt,
+}
+
+
+const drawingSchema = new Schema<IDrawing>({
   imageUrl: {
     type: String,
     required: true,
@@ -12,7 +22,7 @@ const drawingSchema = new Schema({
   },
   prompt: {
     type: Schema.Types.ObjectId,
-    ref: 'Prompt',
+    ref: 'DailyPrompt',
     required: true,
   },
 }, { timestamps: true });

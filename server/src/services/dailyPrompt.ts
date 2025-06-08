@@ -1,5 +1,6 @@
 import Prompt from '../models/prompt.js';
 import DailyPrompt from '../models/dailyPrompt.js'; // new model to store daily chosen prompts
+import nodeCron from 'node-cron';
 
 // Utility to get today's date string in YYYY-MM-DD format
 function getTodayDateString() {
@@ -49,3 +50,7 @@ export async function getDailyPrompt() {
 
   return dailyPromptEntry.prompt;
 }
+
+nodeCron.schedule('0 0 * * *', () => {
+  getDailyPrompt().catch(console.error);
+});
