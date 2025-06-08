@@ -2,41 +2,34 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar'; // Import the Navbar component
 import { useNavigate } from 'react-router-dom';
 import auth from '../utils/auth';
-import { usePrompt } from '../App';
+import { usePrompt, useUser } from '../App';
 
 const ProfilePage: React.FC = () => {
-    const [drawings, setDrawings] = useState<string[]>([]);
+    const [drawings, setDrawings] = useState([]);
     const [streak, setStreak] = useState<number>(0);
     const navigate = useNavigate();
+    const { user } = useUser()
     
 
     useEffect(() => {
         if (!auth.loggedIn()) {
             navigate('/');
         }
-
-        const storedDrawings = JSON.parse(localStorage.getItem('drawings') || '[]');
-        setDrawings(storedDrawings);
-
-        if (storedDrawings.length > 0) {
-            const lastDrawingDate = new Date(storedDrawings[storedDrawings.length - 1].date);
-            const today = new Date();
-            const diffTime = Math.abs(today.getTime() - lastDrawingDate.getTime());
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            setStreak(diffDays === 1 ? streak + 1 : 0);
+        if (user && user.drawings) {
+            setDrawings(user.drawings)
         }
-    }, []);
+    }, [user]);
 
     const downloadPendingDrawing = () => {
-        const pending = localStorage.getItem('pendingDrawing');
-        if (!pending) {
+        const drawing = localStorage.getItem('drawing');
+        if (!drawing) {
             console.warn("No pending drawing found in localStorage.");
             return;
         }
 
-        const { image } = JSON.parse(pending);
+        
         const link = document.createElement('a');
-        link.href = image;
+        link.href = drawing;
         link.download = `doodle-noodle-${new Date().toISOString().slice(0, 10)}.png`;
         document.body.appendChild(link);
         link.click();
@@ -71,7 +64,7 @@ const ProfilePage: React.FC = () => {
                                 className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"
                             >
                                 <img
-                                    src={drawing}
+                                    src={drawing.imageUrl}
                                     alt={`Drawing ${index + 1}`}
                                     className="w-full h-full object-contain"
                                 />

@@ -3,46 +3,82 @@ import Navbar from '../components/Navbar'; // Import the Navbar component
 import auth from '../utils/auth';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { usePrompt, useUser } from '../App';
+import { GET_DAILY_PROMPT } from '../utils/queries';
+import { GET_USER_DATA } from '../utils/queries';
+import { useQuery } from '@apollo/client';
+import { UserData } from '../models/userData';
 
 const GalleryPage: React.FC = () => {
-    const [userDrawing, setUserDrawings] = useState<string>(); // Store all the drawings
-    // const {drawings, loading, error } = useQuery(GET_DAILY_DRAWINGS)
+    const [userDrawing, setUserDrawing] = useState<string>(); // Store User drawings
+    const [allDrawings, setAllDrawings] = useState([]); // Store User drawings
+    const {data, loading, error } = useQuery(GET_DAILY_PROMPT)
     const navigate = useNavigate();
-    const location = useLocation()
     const { prompt } = usePrompt();
     const { user } = useUser();
+    const drawings = data?.dailyPrompt?.drawings
     
-    
-    
+
     useEffect(() => {
         if (!auth.loggedIn()) {
             console.log("Please signin first")
             navigate('/');
         }
-        const storedUserDrawing = JSON.parse(localStorage.getItem('drawing') || '[]');
-        setUserDrawings(storedUserDrawing);
+        
+
+        if (drawings && user) {
+            const userId = user?._id;
+            const found = drawings.find(drawing => {
+                if (!drawing.artist) return false;
+                if (typeof drawing.artist === 'object') {
+                    const userDrawing = drawing.artist._id === userId;
+                    return userDrawing
+                }
+                
+            });
+            
+            setUserDrawing(found ? found.imageUrl : null);
+        }
+        
+        if (drawings && user) {
+            const userId = user?._id;
+            
+            
+            const filter = drawings.filter(drawing => {
+                if (!drawing.artist) return true; // keep drawings with no artist just in case
+                if (typeof drawing.artist === 'object') {
+                    return drawing.artist._id !== userId;
+                }
+            });
+            
+            
+            setAllDrawings(filter);
+        }
+        
         // Fetch the drawings from localStorage
         //get all user drawings
         //make sure to watch for user drawings 
-    }, [navigate]);
+    }, [data, navigate]);
 
     const downloadPendingDrawing = () => {
-        const pending = localStorage.getItem('pendingDrawing');
-        if (!pending) {
+        const drawing = localStorage.getItem('drawing');
+        if (!drawing) {
             console.warn("No pending drawing found in localStorage.");
             return;
         }
 
-        const { image } = JSON.parse(pending);
 
         // Create a temporary <a> tag to download the image
         const link = document.createElement('a');
-        link.href = image;
+        link.href = drawing;
         link.download = `doodle-noodle-${new Date().toISOString().slice(0, 10)}.png`;
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
     };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error.message}</div>;
+    if (!data || !data.dailyPrompt) return <div>No user data found.</div>;
 
     return (
         <div className="flex flex-col items-center justify-center p-6 max-h-screen bg-gray-50">
@@ -68,14 +104,14 @@ const GalleryPage: React.FC = () => {
                     )}
 
                     {/* Render all other drawings */}
-                    {drawings && drawings.length > 0 ? (
-                        drawings.map((drawing, index) => (
+                    {allDrawings && allDrawings.length > 0 ? (
+                        allDrawings.map((drawing, index) => (
                             <div
                                 key={index}
                                 className="w-full h-48 bg-gray-100 rounded-md flex justify-center items-center"
                             >
                                 <img
-                                    src={drawing}
+                                    src={drawing.imageUrl}
                                     alt={`Drawing ${index + 1}`}
                                     className="w-full h-full object-contain"
                                 />

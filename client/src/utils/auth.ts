@@ -35,7 +35,7 @@ class Auth {
 
     login(idToken: string) {
         localStorage.setItem('id_token', idToken);
-        window.location.assign('/start');
+        window.location.assign('/');
     }
 
     logout() {

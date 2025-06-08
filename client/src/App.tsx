@@ -9,7 +9,7 @@ import {
 } from '@apollo/client';
 import { useQuery } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { GET_DAILY_PROMPT } from './utils/queries';
+import { GET_DAILY_PROMPT, GET_USER_DATA } from './utils/queries';
 
 import { UserData } from './models/userData';
 
@@ -47,6 +47,13 @@ export const useUser = () => useContext(UserContext)
 
 export const UserProvider: React.FC<{ children: React.ReactNode }> = ({children}) => {
   const [user, setUser] = useState<UserData>(null)
+  const { data } = useQuery(GET_USER_DATA);
+
+  useEffect(() => {
+    if (data && data.getUserData) {
+      setUser(data.getUserData);
+    }
+  }, [data]);
 
   return (
     <UserContext.Provider value={({user,setUser})}>
