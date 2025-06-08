@@ -37,7 +37,7 @@ const Canvas: React.FC = () => {
   const { setUser } = useUser()
   const canvasRef = useRef<any>(null);
   const [submitDrawingMutation] = useMutation<SubmitDrawingResult>(SUBMIT_DRAWING);
-  const [timeLeft, setTimeLeft] = useState(15);
+  const [timeLeft, setTimeLeft] = useState(30);
 
   useEffect(() => {
     if (timeLeft <= 0) {
@@ -101,12 +101,7 @@ const Canvas: React.FC = () => {
             />
 
             <div className="controls flex justify-center space-x-4 mt-4">
-                <button
-                    onClick={clearCanvas}
-                    className="py-2 px-6 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none"
-                >
-                    Clear
-                </button>
+               
                 {/* <button
                     onClick={submitDrawing}
                     className="py-2 px-6 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none"
@@ -117,5 +112,7 @@ const Canvas: React.FC = () => {
         </div>
     );
 };
+
+export default Canvas;
 
 export default Canvas;
